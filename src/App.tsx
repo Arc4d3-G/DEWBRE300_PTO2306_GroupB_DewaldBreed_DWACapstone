@@ -32,8 +32,8 @@ export default function App() {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
         <Container>
-          <Sidebar setSideBarOpen={setSideBarOpen} setDarkMode={setDarkMode} darkMode={darkMode} />
-          <Frame>
+          <Sidebar sideBarOpen={sideBarOpen} setSideBarOpen={setSideBarOpen} setDarkMode={setDarkMode} darkMode={darkMode} />
+          <Frame onClick={() => setSideBarOpen(false)}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Favourites" element={<Favourites />} />
@@ -43,9 +43,7 @@ export default function App() {
           </Frame>
         </Container>
       </BrowserRouter>
-      
     </ThemeProvider>
-
   )
 }
 

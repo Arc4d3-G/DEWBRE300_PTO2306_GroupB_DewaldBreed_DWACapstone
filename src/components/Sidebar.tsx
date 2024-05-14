@@ -3,26 +3,43 @@ import { CloseRounded as CloseIcon, HomeRounded as HomeIcon, Favorite as Favouri
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logo from '../assets/podcast-logo.png'
 
 
 const Container = styled.div`
     display: flex;
-    flex: 0.5;
+    /* flex: 0.5; */
     flex-direction: column;
     height: 100vh;
     background-color:${({ theme }) => theme.bg};
     color: ${({ theme }) => theme.text_primary};
-    min-width: 180px;
+    min-width: 200px;
+    position: fixed;
+    top: 0;
+    left: ${( { sideBarOpen } ) => sideBarOpen ? "0" : "-100%"};
+    z-index: 1;
+    transition: 0.5s;
 `;
 
-const Logo = styled.div`
+const LogoText = styled.div`
   color: ${({ theme }) => theme.primary};
   font-weight: bold;
   font-size: 20px;
   margin: 16px 0px;
-  padding-left: 20px;
   width: 100%;
   
+`;
+
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  
+
+`;
+
+const LogoImg = styled.img`
+  height: 40px;
 `;
 
 const NavButtons = styled.div`
@@ -59,6 +76,7 @@ const NavText = styled.div`
 const Flex = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const HR = styled.div`
@@ -72,17 +90,21 @@ const NavIcon = styled.div`
   padding-left: 20px;
 `;
 
-export default function Sidebar({setSideBarOpen, setDarkMode, darkMode}) {
+export default function Sidebar({sideBarOpen, setSideBarOpen, setDarkMode, darkMode}) {
 
   const handleThemeToggle = () => {
     setDarkMode(prev => !prev);
   }
 
   return (
-    <Container>
+    <Container sideBarOpen={sideBarOpen}>
       <Flex>
-        <Logo>Pod-Lite</Logo>
-        <CloseBtn>
+        <Logo>
+          <LogoImg src={logo}/>
+          <LogoText>PodStream</LogoText>
+        </Logo>
+        
+        <CloseBtn onClick={() => setSideBarOpen(false)}>
           <CloseIcon/>
         </CloseBtn>
       </Flex>
