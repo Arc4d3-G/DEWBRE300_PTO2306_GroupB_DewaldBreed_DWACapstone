@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PersonRounded as LoginIcon, Menu as MenuIcon } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -45,11 +46,12 @@ const Navbar: FC<Props> = ({ setSideBarOpen }) => {
       <MenuBtn onClick={() => setSideBarOpen((prev) => !prev)}>
         <MenuIcon />
       </MenuBtn>
-
-      <ButtonDiv>
-        <LoginIcon />
-        Login
-      </ButtonDiv>
+      <Link to='/Login'>
+        <ButtonDiv>
+          <LoginIcon />
+          Login
+        </ButtonDiv>
+      </Link>
     </Container>
   );
 };
