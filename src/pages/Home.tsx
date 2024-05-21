@@ -26,7 +26,6 @@ const ShowGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 `;
-
 export default function Home() {
   return (
     <Container>

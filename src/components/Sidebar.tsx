@@ -11,16 +11,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/podcast-logo.png';
 
-const Container = styled.div<{ sideBarOpen: boolean }>`
+const Container = styled.div<{ $sideBarOpen: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100vh;
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text_primary};
-  min-width: 200px;
+  min-width: 300px;
   position: fixed;
   top: 0;
-  left: ${({ sideBarOpen }) => (sideBarOpen ? '0' : '-100%')};
+  left: ${({ $sideBarOpen }) => ($sideBarOpen ? '0' : '-100%')};
   z-index: 1;
   transition: 0.5s;
 `;
@@ -103,7 +103,7 @@ const Sidebar: FC<Props> = ({ sideBarOpen, setSideBarOpen, setDarkMode, darkMode
   };
 
   return (
-    <Container sideBarOpen={sideBarOpen}>
+    <Container $sideBarOpen={sideBarOpen}>
       <Flex>
         <Logo>
           <LogoImg src={logo} />

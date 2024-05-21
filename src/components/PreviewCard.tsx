@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { IconButton } from '@mui/material';
+import { GENRES } from '../api/createApi';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.card};
@@ -45,9 +46,33 @@ const FavoriteBtn = styled(IconButton)`
 
 const Info = styled.div``;
 
-const Title = styled.div``;
+const Title = styled.div`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  color: ${({ theme }) => theme.text_primary};
+`;
 
-const Description = styled.div``;
+const Description = styled.div`
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  color: ${({ theme }) => theme.text_secondary};
+  font-size: 12px;
+`;
+
+const MetaInfo = styled.div`
+  color: ${({ theme }) => theme.text_secondary};
+  font-size: 10px;
+  padding-top: 10px;
+`;
 
 const Seasons = styled.div``;
 
@@ -66,17 +91,6 @@ type Props = {
     updated: string;
   };
 };
-const GENRES: { [key: number]: string } = {
-  1: 'Personal Growth',
-  2: 'True Crime and Investigative Journalism',
-  3: 'History',
-  4: 'Comedy',
-  5: 'Entertainment',
-  6: 'Business',
-  7: 'Fiction',
-  8: 'News',
-  9: 'Kids and Family',
-};
 
 function PreviewCard({ show }: Props) {
   const { title, description, image, seasons, genres, updated } = show;
@@ -93,9 +107,11 @@ function PreviewCard({ show }: Props) {
       <Info>
         <Title>{title}</Title>
         <Description>{description}</Description>
-        <Seasons>Seasons: {seasons}</Seasons>
-        <Genres>Genres: {genreString}</Genres>
-        <Updated>Updated:</Updated>
+        <MetaInfo>
+          <Seasons>Seasons: {seasons}</Seasons>
+          <Genres>Genres: {genreString}</Genres>
+          <Updated>Updated: {updated}</Updated>
+        </MetaInfo>
       </Info>
     </Container>
   );
