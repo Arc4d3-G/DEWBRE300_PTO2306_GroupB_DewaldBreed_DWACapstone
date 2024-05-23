@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/podcast-logo.png';
 
-const Container = styled.div<{ $sideBarOpen: boolean }>`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -20,7 +20,7 @@ const Container = styled.div<{ $sideBarOpen: boolean }>`
   min-width: 300px;
   position: fixed;
   top: 0;
-  left: ${({ $sideBarOpen }) => ($sideBarOpen ? '0' : '-100%')};
+  left: 0;
   z-index: 1;
   transition: 0.5s;
 `;
@@ -69,7 +69,6 @@ const NavBtn = styled.div`
 
 const NavText = styled.div`
   padding: 0px 0px 5px 12px;
-
   text-decoration: none;
 `;
 
@@ -91,19 +90,19 @@ const NavIcon = styled.div`
 `;
 
 type Props = {
-  sideBarOpen: boolean;
   darkMode: boolean;
+  setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Sidebar: FC<Props> = ({ sideBarOpen, setSideBarOpen, setDarkMode, darkMode }) => {
+const Sidebar: FC<Props> = ({ setShowDetailsOpen, setSideBarOpen, setDarkMode, darkMode }) => {
   const handleThemeToggle = () => {
     setDarkMode((prev) => !prev);
   };
 
   return (
-    <Container $sideBarOpen={sideBarOpen}>
+    <Container>
       <Flex>
         <Logo>
           <LogoImg src={logo} />
@@ -113,7 +112,7 @@ const Sidebar: FC<Props> = ({ sideBarOpen, setSideBarOpen, setDarkMode, darkMode
           <CloseIcon />
         </CloseBtn>
       </Flex>
-      <NavButtons>
+      <NavButtons onClick={() => setShowDetailsOpen(false)}>
         <Link to='/'>
           <NavBtn>
             <NavIcon>

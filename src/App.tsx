@@ -5,9 +5,11 @@ import Favourites from './pages/Favourites';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Sidebar from './components/Sidebar';
+import ShowDetails from './components/ShowDetails';
 import { useState, FC } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
+import { createApi } from './api/createApi';
 
 const Container = styled.div`
   display: flex;
@@ -24,10 +26,17 @@ const Frame = styled.div`
   flex-direction: column;
   flex: 3;
 `;
+const api = createApi();
+export const previews = await api.getPreviewsList();
+// const showDetails = await api.getShowDetails('10716');
+// console.log(showDetails);
 
 const App: FC = () => {
+  console.log('App render');
   const [darkMode, setDarkMode] = useState<boolean>(true);
-  const [sideBarOpen, setSideBarOpen] = useState<boolean>(true);
+  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
+  const [showDetailsOpen, setShowDetailsOpen] = useState<boolean>(true);
+  const [selectedShowId, setSelectedShowId] = useState<string>('');
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -35,7 +44,7 @@ const App: FC = () => {
         <Container>
           {sideBarOpen && (
             <Sidebar
-              sideBarOpen={sideBarOpen}
+              setShowDetailsOpen={setShowDetailsOpen}
               setSideBarOpen={setSideBarOpen}
               setDarkMode={setDarkMode}
               darkMode={darkMode}
@@ -43,6 +52,10 @@ const App: FC = () => {
           )}
           <Frame>
             <Navbar setSideBarOpen={setSideBarOpen} />
+            {showDetailsOpen && (
+              <ShowDetails /* showDetails */ setShowDetailsOpen={setShowDetailsOpen} />
+            )}
+
             <Routes>
               <Route
                 path='/'

@@ -13,12 +13,12 @@ export const GENRES: { [key: number]: string } = {
 export type genreIds = Array<number>;
 
 export type Preview = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   seasons: number;
   image: string;
-  array: genreIds;
+  genres: genreIds;
   updated: string;
 };
 
@@ -36,7 +36,7 @@ export type Season = {
   episodes: Array<Episode>;
 };
 export type Show = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   seasons: Array<Season>;
@@ -45,8 +45,8 @@ export type Show = {
 };
 
 export type Api = {
-  getPreviewsList: () => Promise<Error | Array<Preview>>;
-  getShowDetails: (id: number) => Promise<Error | Show>;
+  getPreviewsList: () => Promise<Array<Preview>>;
+  getShowDetails: (id: string) => Promise<Error | Show>;
 };
 
 const URL = 'https://podcast-api.netlify.app/';
@@ -74,7 +74,7 @@ export const getPreviewsList: Api['getPreviewsList'] = () => {
   return result;
 };
 
-export const getShowDetails: Api['getShowDetails'] = (id: number) => {
+export const getShowDetails: Api['getShowDetails'] = (id) => {
   const result = fetch(`${URL}id/${id}`)
     .then((response) => {
       if (!response.ok) {
