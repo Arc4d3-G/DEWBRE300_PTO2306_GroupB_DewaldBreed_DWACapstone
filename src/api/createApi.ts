@@ -46,7 +46,7 @@ export type Show = {
 
 export type Api = {
   getPreviewsList: () => Promise<Array<Preview>>;
-  getShowDetails: (id: string) => Promise<Error | Show>;
+  getShowDetails: (id: string) => Promise<Show>;
 };
 
 const URL = 'https://podcast-api.netlify.app/';

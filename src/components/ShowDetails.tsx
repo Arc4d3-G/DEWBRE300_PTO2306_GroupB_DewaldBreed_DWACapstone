@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CloseRounded as CloseIcon } from '@mui/icons-material';
+import { useStore } from 'zustand';
+import { store } from '../App';
+import { Show } from '../api/createApi';
 
 const Container = styled.div`
   position: fixed;
@@ -11,7 +14,7 @@ const Container = styled.div`
   width: 80%;
   height: 80%;
   transform: translate(-50%, -50%);
-  margin: 0;
+  margin-top: 30px;
   border: 2px solid ${({ theme }) => theme.primary};
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text_primary};
@@ -35,17 +38,24 @@ const CloseBtn = styled.div`
   cursor: pointer;
 `;
 
+const ShowContainer = styled.div``;
+
 type Props = {
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ShowDetails({ setShowDetailsOpen }: Props) {
+  console.log('ShowDetails Render');
+  // const phase = useStore(store, (state) => state.phase);
+  const selectedShowData: Show | null = useStore(store, (state) => state.selectedShow);
+
   return (
     <Container>
       <Dialog>
         <CloseBtn onClick={() => setShowDetailsOpen(false)}>
           <CloseIcon />
         </CloseBtn>
+        {selectedShowData && <ShowContainer>{selectedShowData}</ShowContainer>}
       </Dialog>
     </Container>
   );

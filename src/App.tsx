@@ -10,9 +10,12 @@ import { useState, FC } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
 import { createApi } from './api/createApi';
+import { useStore } from 'zustand';
+import { createStore } from './model/useStore';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.bgLight};
   width: 100%;
   height: 100vh;
@@ -25,19 +28,30 @@ const Frame = styled.div`
   display: flex;
   flex-direction: column;
   flex: 3;
+  overflow-y: scroll;
 `;
-const api = createApi();
-export const previews = await api.getPreviewsList();
-// const showDetails = await api.getShowDetails('10716');
-// console.log(showDetails);
+
+const Loading = styled.div`
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.primary};
+  font-size: 20px;
+`;
+export const api = createApi();
+export const store = createStore(api);
 
 const App: FC = () => {
-  console.log('App render');
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
-  const [showDetailsOpen, setShowDetailsOpen] = useState<boolean>(true);
-  const [selectedShowId, setSelectedShowId] = useState<string>('');
+  const [showDetailsOpen, setShowDetailsOpen] = useState<boolean>(false);
 
+  const previewData = useStore(store, (state) => state.previewData);
+  const phase = useStore(store, (state) => state.phase);
+  console.log('App Render');
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
@@ -50,16 +64,19 @@ const App: FC = () => {
               darkMode={darkMode}
             />
           )}
+          <Navbar setSideBarOpen={setSideBarOpen} />
           <Frame>
-            <Navbar setSideBarOpen={setSideBarOpen} />
-            {showDetailsOpen && (
-              <ShowDetails /* showDetails */ setShowDetailsOpen={setShowDetailsOpen} />
-            )}
-
+            {phase === 'LOADING' && <Loading>LOADING...</Loading>}
+            {showDetailsOpen && <ShowDetails setShowDetailsOpen={setShowDetailsOpen} />}
             <Routes>
               <Route
                 path='/'
-                element={<Home />}
+                element={
+                  <Home
+                    setShowDetailsOpen={setShowDetailsOpen}
+                    previewData={previewData}
+                  />
+                }
               />
               <Route
                 path='/Favourites'

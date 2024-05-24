@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 // import { IconButton } from '@mui/material';
 import { GENRES } from '../api/createApi';
+import { store } from '../App';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.card};
@@ -10,40 +11,16 @@ const Container = styled.div`
   height: 350px;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   padding: 16px;
   border-radius: 6px;
   cursor: pointer;
 `;
 
 const Image = styled.img`
-  /* object-fit: cover; */
   width: 220px;
   height: 220px;
   border-radius: 6px;
 `;
-
-// const Top = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 210px;
-//   position: relative;
-// `;
-
-// const FavoriteBtn = styled(IconButton)`
-//   color: white !important;
-//   top: 8px;
-//   right: 6px;
-//   padding: 6px;
-//   border-radius: 50%;
-//   display: flex;
-//   align-items: center;
-//   background: ${({ theme }) => theme.button} !important;
-//   backdrop-filter: blur(4px);
-//   position: absolute !important;
-//   box-shadow: 0 0 16px #222423;
-// `;
 
 const Info = styled.div``;
 
@@ -95,19 +72,11 @@ type Props = {
 };
 
 function PreviewCard({ show }: Props) {
-  const { title, description, image, seasons, genres, updated, id } = show;
+  const { title, description, image, seasons, genres, updated } = show;
   const genreString = genres.map((id) => GENRES[id]).join(', ');
 
-  const handlePreviewClick = () => {
-    //setShowDetailsOpen(true)
-    //get show id
-    //get details form api
-    //send api details to ShowDetails
-    console.log(id);
-  };
-
   return (
-    <Container onClick={() => handlePreviewClick()}>
+    <Container>
       <Image src={image} />
 
       <Info>
