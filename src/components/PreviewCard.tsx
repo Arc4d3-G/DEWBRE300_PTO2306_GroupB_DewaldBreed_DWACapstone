@@ -3,7 +3,6 @@ import styled from 'styled-components';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 // import { IconButton } from '@mui/material';
 import { GENRES } from '../api/createApi';
-import { store } from '../App';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.card};

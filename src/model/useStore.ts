@@ -5,7 +5,7 @@ type GlobalStore = {
   phase: 'DONE' | 'LOADING';
   previewData: Preview[];
   selectedShow: Show | null;
-  setSelectedShow: (id: string) => Promise<void>;
+  setSelectedShow: (id: string) => void;
 };
 
 export const createStore = (api: Api) => {
@@ -14,12 +14,13 @@ export const createStore = (api: Api) => {
     previewData: [],
     selectedShow: null,
 
-    setSelectedShow: async (id: string) => {
+    setSelectedShow: (id: string) => {
       set({ phase: 'LOADING' });
       console.log(store.getState());
-      const response = await api.getShowDetails(id);
-      set({ phase: 'DONE', selectedShow: response });
-      console.log(store.getState());
+      api.getShowDetails(id).then((data) => {
+        set({ phase: 'DONE', selectedShow: data });
+        console.log(store.getState());
+      });
     },
   }));
 

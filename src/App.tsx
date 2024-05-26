@@ -5,7 +5,7 @@ import Favourites from './pages/Favourites';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Sidebar from './components/Sidebar';
-import ShowDetails from './components/ShowDetails';
+import ShowDetailsOverlay from './components/ShowDetailsOverlay';
 import { useState, FC } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
@@ -22,13 +22,13 @@ const Container = styled.div`
   overflow-x: hidden;
   overflow-y: hidden;
   transition: 0.5s;
+  overflow-y: scroll;
 `;
 
 const Frame = styled.div`
   display: flex;
   flex-direction: column;
   flex: 3;
-  overflow-y: scroll;
 `;
 
 const Loading = styled.div`
@@ -51,7 +51,7 @@ const App: FC = () => {
 
   const previewData = useStore(store, (state) => state.previewData);
   const phase = useStore(store, (state) => state.phase);
-  console.log('App Render');
+  console.log('app render');
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
@@ -67,7 +67,7 @@ const App: FC = () => {
           <Navbar setSideBarOpen={setSideBarOpen} />
           <Frame>
             {phase === 'LOADING' && <Loading>LOADING...</Loading>}
-            {showDetailsOpen && <ShowDetails setShowDetailsOpen={setShowDetailsOpen} />}
+            {showDetailsOpen && <ShowDetailsOverlay setShowDetailsOpen={setShowDetailsOpen} />}
             <Routes>
               <Route
                 path='/'

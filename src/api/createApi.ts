@@ -42,6 +42,7 @@ export type Show = {
   seasons: Array<Season>;
   image: string;
   updated: string;
+  genres: Array<string>;
 };
 
 export type Api = {

@@ -34,7 +34,7 @@ export default function Home({ previewData, setShowDetailsOpen }: Props) {
     <Container>
       <Carousel></Carousel>
       <ShowGrid>
-        {previewData.slice(0, 10).map((preview: Preview) => (
+        {previewData.slice(0, 30).map((preview: Preview) => (
           <CardContainer
             key={preview.id}
             onClick={() => handleCardClick(preview.id)}

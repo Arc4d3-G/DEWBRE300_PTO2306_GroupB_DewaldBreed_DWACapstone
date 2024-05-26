@@ -1,62 +1,123 @@
-import React from 'react';
-import styled from 'styled-components';
-import { CloseRounded as CloseIcon } from '@mui/icons-material';
-import { useStore } from 'zustand';
-import { store } from '../App';
+import React, { useState } from 'react';
 import { Show } from '../api/createApi';
+import styled from 'styled-components';
 
-const Container = styled.div`
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  min-width: 350px;
-  max-width: 900px;
-  width: 80%;
-  height: 80%;
-  transform: translate(-50%, -50%);
-  margin-top: 30px;
+const ShowContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+`;
+
+const Image = styled.img`
+  max-width: 280px;
+  /* height: 280px; */
+`;
+
+const Top = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+`;
+
+const MetaInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  gap: 10px;
+`;
+
+const Title = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-weight: bold;
+  font-size: 20px;
+`;
+const Description = styled.div`
+  margin: 0;
+`;
+const Genres = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  justify-content: center;
+  gap: 10px;
+`;
+const GenreItem = styled.div`
+  font-size: 14px;
+  padding: 5px;
+  color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.bgLight};
   border: 2px solid ${({ theme }) => theme.primary};
-  background-color: ${({ theme }) => theme.bg};
-  color: ${({ theme }) => theme.text_primary};
   border-radius: 12px;
 `;
 
-const Dialog = styled.div`
+const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
 `;
 
-const CloseBtn = styled.div`
-  position: fixed;
-  right: 0;
-  top: 0;
-  margin: 5px;
-  cursor: pointer;
+const SeasonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
 `;
 
-const ShowContainer = styled.div``;
-
+const Episodes = styled.div``;
+const SeasonSelect = styled.select``;
 type Props = {
-  setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedShow: Show;
 };
 
-export default function ShowDetails({ setShowDetailsOpen }: Props) {
-  console.log('ShowDetails Render');
-  // const phase = useStore(store, (state) => state.phase);
-  const selectedShowData: Show | null = useStore(store, (state) => state.selectedShow);
+export default function ShowDetails({ selectedShow }: Props) {
+  const { image, title, description, genres, seasons } = selectedShow;
+  const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
 
+  // console.log(seasons);
+  console.log(selectedSeason);
+  const handleSeasonSelect = (value: string) => {
+    setSelectedSeason(seasons[Number(value) - 1]);
+  };
   return (
-    <Container>
-      <Dialog>
-        <CloseBtn onClick={() => setShowDetailsOpen(false)}>
-          <CloseIcon />
-        </CloseBtn>
-        {selectedShowData && <ShowContainer>{selectedShowData}</ShowContainer>}
-      </Dialog>
-    </Container>
+    <ShowContainer>
+      <Top>
+        <Image src={image} />
+        <MetaInfo>
+          <Title>{title}</Title>
+          <Description>{description}</Description>
+          <Genres>
+            {genres &&
+              selectedShow.genres
+                .filter((genre) => genre != 'All' && genre != 'Featured')
+                .map((genre, index) => <GenreItem key={index}>{genre}</GenreItem>)}
+          </Genres>
+        </MetaInfo>
+      </Top>
+      <Bottom>
+        <SeasonContainer>
+          <Title>Episodes</Title>
+          <SeasonSelect
+            name='seasons'
+            id='seasons'
+            onChange={(event) => handleSeasonSelect(event.target.value)}
+          >
+            {seasons.map((season) => (
+              <option
+                key={season.season}
+                value={season.season}
+              >
+                Season {season.season}
+              </option>
+            ))}
+          </SeasonSelect>
+        </SeasonContainer>
+        <Episodes>{}</Episodes>
+      </Bottom>
+    </ShowContainer>
   );
 }
