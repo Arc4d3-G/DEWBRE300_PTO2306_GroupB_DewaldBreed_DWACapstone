@@ -12,7 +12,8 @@ const DisableOutsideClick = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 10000;
+  /* z-index: 10000; */
+  backdrop-filter: blur(6px);
 `;
 
 const Container = styled.div`
@@ -24,8 +25,8 @@ const Container = styled.div`
   width: 80%;
   height: 80%;
   transform: translate(-50%, -50%);
-  margin-top: 30px;
-  padding: 10px;
+
+  padding: 15px;
   border: 2px solid ${({ theme }) => theme.primary};
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text_primary};
@@ -39,7 +40,6 @@ const Dialog = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
-  /* padding: 15px; */
 `;
 
 const CloseBtn = styled.div`
@@ -72,8 +72,8 @@ export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
     store.setState({ selectedShow: null });
   };
   return (
-    <DisableOutsideClick>
-      <Container>
+    <DisableOutsideClick onClick={() => handleClose()}>
+      <Container onClick={(e) => e.stopPropagation()}>
         <Dialog>
           <CloseBtn onClick={() => handleClose()}>
             <CloseIcon />

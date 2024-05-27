@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Show } from '../api/createApi';
 import styled from 'styled-components';
+import EpisodeCard from './EpisodeCard';
 
 const ShowContainer = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ const Title = styled.div`
   font-size: 20px;
 `;
 const Description = styled.div`
+  color: ${({ theme }) => theme.text_secondary};
   margin: 0;
 `;
 const Genres = styled.div`
@@ -66,9 +68,22 @@ const SeasonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-around;
+  margin-bottom: 15px;
 `;
 
-const Episodes = styled.div``;
+const Episodes = styled.div`
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const HR = styled.div`
+  width: 100%;
+  height: 2px;
+  margin: 10px 0px 10px 0px;
+  background-color: ${({ theme }) => theme.primary};
+`;
 const SeasonSelect = styled.select``;
 type Props = {
   selectedShow: Show;
@@ -78,7 +93,6 @@ export default function ShowDetails({ selectedShow }: Props) {
   const { image, title, description, genres, seasons } = selectedShow;
   const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
 
-  // console.log(seasons);
   console.log(selectedSeason);
   const handleSeasonSelect = (value: string) => {
     setSelectedSeason(seasons[Number(value) - 1]);
@@ -97,7 +111,9 @@ export default function ShowDetails({ selectedShow }: Props) {
                 .map((genre, index) => <GenreItem key={index}>{genre}</GenreItem>)}
           </Genres>
         </MetaInfo>
+        <HR />
       </Top>
+
       <Bottom>
         <SeasonContainer>
           <Title>Episodes</Title>
@@ -116,7 +132,14 @@ export default function ShowDetails({ selectedShow }: Props) {
             ))}
           </SeasonSelect>
         </SeasonContainer>
-        <Episodes>{}</Episodes>
+        <Episodes>
+          {selectedSeason.episodes.map((episode) => (
+            <EpisodeCard
+              key={episode.episode}
+              episode={episode}
+            />
+          ))}
+        </Episodes>
       </Bottom>
     </ShowContainer>
   );

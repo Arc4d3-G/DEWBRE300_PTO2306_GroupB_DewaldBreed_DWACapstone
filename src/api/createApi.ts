@@ -64,6 +64,7 @@ export const getPreviewsList: Api['getPreviewsList'] = () => {
     .then((data) => {
       const result = data.map((item: Preview) => ({
         ...item,
+        genres: item.genres.map((genre) => GENRES[genre]),
         updated: new Date(item.updated).toLocaleDateString('en-gb', {
           year: 'numeric',
           month: 'long',

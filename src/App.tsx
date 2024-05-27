@@ -51,7 +51,7 @@ const App: FC = () => {
 
   const previewData = useStore(store, (state) => state.previewData);
   const phase = useStore(store, (state) => state.phase);
-  console.log('app render');
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
@@ -88,7 +88,12 @@ const App: FC = () => {
               />
               <Route
                 path='/Search'
-                element={<Search />}
+                element={
+                  <Search
+                    setShowDetailsOpen={setShowDetailsOpen}
+                    previewData={previewData}
+                  />
+                }
               />
             </Routes>
           </Frame>
