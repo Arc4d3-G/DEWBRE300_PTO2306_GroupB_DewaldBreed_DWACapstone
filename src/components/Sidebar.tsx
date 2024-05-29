@@ -10,7 +10,17 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/podcast-logo.png';
+import { User } from '@supabase/supabase-js';
 
+const DisableOutsideClick = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* z-index: 10000; */
+  /* backdrop-filter: blur(6px); */
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,6 +33,7 @@ const Container = styled.div`
   left: 0;
   z-index: 1;
   transition: 0.5s;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.623);
 `;
 
 const LogoText = styled.div`
@@ -94,66 +105,75 @@ type Props = {
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User | null;
 };
 
-const Sidebar: FC<Props> = ({ setShowDetailsOpen, setSideBarOpen, setDarkMode, darkMode }) => {
+const Sidebar: FC<Props> = ({
+  setShowDetailsOpen,
+  setSideBarOpen,
+  setDarkMode,
+  darkMode,
+  user,
+}) => {
   const handleThemeToggle = () => {
     setDarkMode((prev) => !prev);
   };
 
   return (
-    <Container>
-      <Flex>
-        <Logo>
-          <LogoImg src={logo} />
-          <LogoText>PodStream</LogoText>
-        </Logo>
-        <CloseBtn onClick={() => setSideBarOpen(false)}>
-          <CloseIcon />
-        </CloseBtn>
-      </Flex>
-      <NavButtons onClick={() => setShowDetailsOpen(false)}>
-        <Link to='/'>
-          <NavBtn>
+    <DisableOutsideClick onClick={() => setSideBarOpen(false)}>
+      <Container>
+        <Flex>
+          <Logo>
+            <LogoImg src={logo} />
+            <LogoText>PodStream</LogoText>
+          </Logo>
+          <CloseBtn onClick={() => setSideBarOpen(false)}>
+            <CloseIcon />
+          </CloseBtn>
+        </Flex>
+        <NavButtons onClick={() => setShowDetailsOpen(false)}>
+          <Link to='/'>
+            <NavBtn>
+              <NavIcon>
+                <HomeIcon />
+              </NavIcon>
+              <NavText>Home</NavText>
+            </NavBtn>
+          </Link>
+          <Link to='/Search'>
+            <NavBtn>
+              <NavIcon>
+                <SearchIcon />
+              </NavIcon>
+              <NavText>Search</NavText>
+            </NavBtn>
+          </Link>
+          <Link to='/Favourites'>
+            <NavBtn>
+              <NavIcon>
+                <FavouritesIcon />
+              </NavIcon>
+              <NavText>Favourites</NavText>
+            </NavBtn>
+          </Link>
+          <HR />
+          <NavBtn onClick={handleThemeToggle}>
             <NavIcon>
-              <HomeIcon />
+              <ThemeIcon />
             </NavIcon>
-            <NavText>Home</NavText>
+            <NavText>{darkMode ? 'Light Mode' : 'Dark Mode'}</NavText>
           </NavBtn>
-        </Link>
-        <Link to='/Search'>
-          <NavBtn>
-            <NavIcon>
-              <SearchIcon />
-            </NavIcon>
-            <NavText>Search</NavText>
-          </NavBtn>
-        </Link>
-        <Link to='/Favourites'>
-          <NavBtn>
-            <NavIcon>
-              <FavouritesIcon />
-            </NavIcon>
-            <NavText>Favourites</NavText>
-          </NavBtn>
-        </Link>
-        <HR />
-        <NavBtn onClick={handleThemeToggle}>
-          <NavIcon>
-            <ThemeIcon />
-          </NavIcon>
-          <NavText>{darkMode ? 'Light Mode' : 'Dark Mode'}</NavText>
-        </NavBtn>
-        <Link to='/Login'>
-          <NavBtn>
-            <NavIcon>
-              <LoginIcon />
-            </NavIcon>
-            <NavText>Login</NavText>
-          </NavBtn>
-        </Link>
-      </NavButtons>
-    </Container>
+          <Link to='/Login'>
+            <NavBtn>
+              <NavIcon>
+                <LoginIcon />
+              </NavIcon>
+              <NavText>{user === null ? 'Login' : 'Account Details'}</NavText>
+            </NavBtn>
+          </Link>
+        </NavButtons>
+      </Container>
+    </DisableOutsideClick>
   );
 };
 

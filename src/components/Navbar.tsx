@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PersonRounded as LoginIcon, Menu as MenuIcon } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { User } from '@supabase/supabase-js';
 
 const Container = styled.div`
   display: flex;
@@ -17,13 +18,26 @@ const Container = styled.div`
   transition: 0.5s;
 `;
 
+const Left = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+const Right = styled.div``;
 const MenuBtn = styled.div`
   cursor: pointer;
 `;
 
+const PageTitle = styled.div`
+  margin-bottom: 4px;
+  /* color: ${({ theme }) => theme.primary}; */
+  /* font-weight: bold; */
+  /* font-size: 20px; */
+`;
+
 const ButtonDiv = styled.div`
   cursor: pointer;
-  max-width: 70px;
+  /* max-width: 70px; */
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.primary};
@@ -31,27 +45,33 @@ const ButtonDiv = styled.div`
   border-radius: 12px;
   padding: 8px 10px;
   gap: 8px;
-  &:hover {
+  /* &:hover {
     background-color: ${({ theme }) => theme.button};
-  }
+  } */
 `;
 
 type Props = {
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User | null;
 };
 
-const Navbar: FC<Props> = ({ setSideBarOpen }) => {
+const Navbar = ({ setSideBarOpen, user }: Props) => {
   return (
     <Container>
-      <MenuBtn onClick={() => setSideBarOpen((prev) => !prev)}>
-        <MenuIcon />
-      </MenuBtn>
-      <Link to='/Login'>
-        <ButtonDiv>
-          <LoginIcon />
-          Login
-        </ButtonDiv>
-      </Link>
+      <Left>
+        <MenuBtn onClick={() => setSideBarOpen((prev) => !prev)}>
+          <MenuIcon />
+        </MenuBtn>
+        <PageTitle>{useLocation().pathname.substring(1)}</PageTitle>
+      </Left>
+      <Right>
+        <Link to='/Login'>
+          <ButtonDiv>
+            <LoginIcon />
+            {user === null ? 'Login' : user.email}
+          </ButtonDiv>
+        </Link>
+      </Right>
     </Container>
   );
 };

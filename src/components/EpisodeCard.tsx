@@ -11,6 +11,7 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.bgLight};
   border: 2px solid ${({ theme }) => theme.primary};
   border-radius: 12px;
+  overflow: hidden;
 `;
 
 const Details = styled.div`
@@ -21,14 +22,15 @@ const Details = styled.div`
 const Title = styled.div`
   color: ${({ theme }) => theme.primary};
   font-weight: bold;
+  font-size: 15px;
 `;
 const Description = styled.div`
-  font-size: 15px;
+  font-size: 12px;
   overflow: hidden;
   max-width: 100%;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   color: ${({ theme }) => theme.text_secondary};
@@ -57,7 +59,7 @@ export default function EpisodeCard({ episode }: Props) {
     <Container>
       <Details>
         <Title>{`#${episodeNum} - ${title}`}</Title>
-        <Description>{description}</Description>
+        <Description>{description ? description : 'No description found'}</Description>
       </Details>
       <Buttons>
         <Button>

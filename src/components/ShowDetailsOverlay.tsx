@@ -25,8 +25,8 @@ const Container = styled.div`
   width: 80%;
   height: 80%;
   transform: translate(-50%, -50%);
+  padding: 30px 20px 30px 20px;
 
-  padding: 15px;
   border: 2px solid ${({ theme }) => theme.primary};
   background-color: ${({ theme }) => theme.bg};
   color: ${({ theme }) => theme.text_primary};
@@ -44,21 +44,21 @@ const Dialog = styled.div`
 
 const CloseBtn = styled.div`
   position: fixed;
-  right: 0;
+  right: 10px;
   top: 0;
   margin: 5px;
   cursor: pointer;
 `;
-const Loading = styled.div`
-  position: fixed;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.primary};
-  font-size: 20px;
-`;
+// const Loading = styled.div`
+//   position: fixed;
+//   display: flex;
+//   width: 100%;
+//   height: 100%;
+//   justify-content: center;
+//   align-items: center;
+//   color: ${({ theme }) => theme.primary};
+//   font-size: 20px;
+// `;
 type Props = {
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -78,7 +78,7 @@ export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
           <CloseBtn onClick={() => handleClose()}>
             <CloseIcon />
           </CloseBtn>
-          {selectedShow === null && <Loading>LOADING</Loading>}
+          {/* {selectedShow === null && <Loading>LOADING SHOW...</Loading>} */}
           {selectedShow && <ShowDetails selectedShow={selectedShow} />}
         </Dialog>
       </Container>

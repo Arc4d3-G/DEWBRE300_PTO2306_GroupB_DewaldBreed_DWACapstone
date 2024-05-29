@@ -74,6 +74,7 @@ type Props = {
 export default function Search({ previewData, setShowDetailsOpen }: Props) {
   console.log('render');
   const [sortByType, setSortByType] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [searchKey, setSearchKey] = useState('');
 
   const handleCardClick = (id: string) => {
@@ -87,35 +88,34 @@ export default function Search({ previewData, setShowDetailsOpen }: Props) {
 
   const searchResults = fuse.search(searchKey);
 
-  const sortResults = (sortByType: string): FuseResult<Preview>[] => {
-    let sorted: FuseResult<Preview>[] = [];
+  const sortResults = (sortByType: string) => {
     switch (sortByType) {
       case 'All':
         return searchResults;
       case 'Latest':
-        sorted = searchResults.toSorted((a, b) => {
+        return searchResults.toSorted((a, b) => {
           const aDate = new Date(a.item.updated);
           const bDate = new Date(b.item.updated);
           return bDate.getTime() - aDate.getTime();
         });
-        return sorted;
+
       case 'Oldest':
-        sorted = searchResults.toSorted((a, b) => {
+        return searchResults.toSorted((a, b) => {
           const aDate = new Date(a.item.updated);
           const bDate = new Date(b.item.updated);
           return aDate.getTime() - bDate.getTime();
         });
-        return sorted;
+
       case 'A-Z':
-        sorted = searchResults.toSorted((a, b) => {
+        return searchResults.toSorted((a, b) => {
           return a.item.title.localeCompare(b.item.title);
         });
-        return sorted;
+
       case 'Z-A':
-        sorted = searchResults.toSorted((a, b) => {
+        return searchResults.toSorted((a, b) => {
           return b.item.title.localeCompare(a.item.title);
         });
-        return sorted;
+
       default:
         return searchResults;
     }
@@ -123,12 +123,17 @@ export default function Search({ previewData, setShowDetailsOpen }: Props) {
 
   return (
     <Container>
-      <Form>
+      <Form
+        onSubmit={(event) => {
+          setSearchKey(inputValue);
+          event.preventDefault();
+        }}
+      >
         <InputField
           type='text'
-          onChange={(event) => setSearchKey(event.target.value)}
+          onChange={(event) => setInputValue(event.target.value)}
           placeholder='Search by Title or Genre...'
-          value={searchKey}
+          value={inputValue}
         ></InputField>
       </Form>
       <BtnContainer>

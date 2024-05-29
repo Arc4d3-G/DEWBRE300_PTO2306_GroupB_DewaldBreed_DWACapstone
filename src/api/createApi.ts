@@ -1,4 +1,4 @@
-export const GENRES: { [key: number]: string } = {
+export const GENRES: { [key: string]: string } = {
   1: 'Personal Growth',
   2: 'True Crime and Investigative Journalism',
   3: 'History',
@@ -10,15 +10,13 @@ export const GENRES: { [key: number]: string } = {
   9: 'Kids and Family',
 };
 
-export type genreIds = Array<number>;
-
 export type Preview = {
   id: string;
   title: string;
   description: string;
   seasons: number;
   image: string;
-  genres: genreIds;
+  genres: Array<string>;
   updated: string;
 };
 
@@ -71,6 +69,7 @@ export const getPreviewsList: Api['getPreviewsList'] = () => {
           day: 'numeric',
         }),
       }));
+      console.log(result);
       return result;
     });
   return result;

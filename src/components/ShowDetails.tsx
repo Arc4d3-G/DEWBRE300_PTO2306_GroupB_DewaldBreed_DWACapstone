@@ -23,6 +23,7 @@ const Top = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  align-items: center;
 `;
 
 const MetaInfo = styled.div`
@@ -53,7 +54,7 @@ const GenreItem = styled.div`
   font-size: 14px;
   padding: 5px;
   color: ${({ theme }) => theme.primary};
-  background-color: ${({ theme }) => theme.bgLight};
+  /* background-color: ${({ theme }) => theme.bgLight}; */
   border: 2px solid ${({ theme }) => theme.primary};
   border-radius: 12px;
 `;
@@ -78,13 +79,18 @@ const Episodes = styled.div`
   gap: 10px;
 `;
 
-const HR = styled.div`
-  width: 100%;
-  height: 2px;
-  margin: 10px 0px 10px 0px;
-  background-color: ${({ theme }) => theme.primary};
+// const HR = styled.div`
+//   width: 100%;
+//   height: 2px;
+//   margin: 10px 0px 10px 0px;
+//   background-color: ${({ theme }) => theme.primary};
+// `;
+const SeasonSelect = styled.select`
+  width: 100px;
+  color: ${({ theme }) => theme.text_secondary};
+  background-color: ${({ theme }) => theme.bg};
+  border: 2px solid ${({ theme }) => theme.primary};
 `;
-const SeasonSelect = styled.select``;
 type Props = {
   selectedShow: Show;
 };
@@ -111,12 +117,11 @@ export default function ShowDetails({ selectedShow }: Props) {
                 .map((genre, index) => <GenreItem key={index}>{genre}</GenreItem>)}
           </Genres>
         </MetaInfo>
-        <HR />
       </Top>
 
       <Bottom>
         <SeasonContainer>
-          <Title>Episodes</Title>
+          <Title>{`Episodes (${selectedSeason.episodes.length})`}</Title>
           <SeasonSelect
             name='seasons'
             id='seasons'

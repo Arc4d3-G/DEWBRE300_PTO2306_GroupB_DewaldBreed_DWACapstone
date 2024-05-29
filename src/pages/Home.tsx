@@ -42,52 +42,63 @@ const ShowGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 `;
+const Loading = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.primary};
+  font-size: 20px;
+`;
 
 const CardContainer = styled.div``;
 type Props = {
   previewData: Preview[];
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  phase: string;
 };
-export default function Home({ previewData, setShowDetailsOpen }: Props) {
+export default function Home({ previewData, setShowDetailsOpen, phase }: Props) {
   const [sortByType, setSortByType] = useState('');
 
   const sortPreviews = (sortByType: string): Preview[] => {
-    let sorted: Preview[] = [];
     switch (sortByType) {
       case 'All':
         return previewData;
       case 'Latest':
-        sorted = previewData.toSorted((a, b) => {
+        return previewData.toSorted((a, b) => {
           const aDate = new Date(a.updated);
           const bDate = new Date(b.updated);
           return bDate.getTime() - aDate.getTime();
         });
-        return sorted;
+
       case 'Oldest':
-        sorted = previewData.toSorted((a, b) => {
+        return previewData.toSorted((a, b) => {
           const aDate = new Date(a.updated);
           const bDate = new Date(b.updated);
           return aDate.getTime() - bDate.getTime();
         });
-        return sorted;
+
       case 'A-Z':
-        sorted = previewData.toSorted((a, b) => {
+        return previewData.toSorted((a, b) => {
           return a.title.localeCompare(b.title);
         });
-        return sorted;
+
       case 'Z-A':
-        sorted = previewData.toSorted((a, b) => {
+        return previewData.toSorted((a, b) => {
           return b.title.localeCompare(a.title);
         });
-        return sorted;
+
       default:
         return previewData;
     }
   };
 
-  const handleSortClick = (sortKey: string, event) => {
+  const handleSortClick = (sortKey: string) => {
     setSortByType(sortKey);
   };
+
   const handleCardClick = (id: string) => {
     store.getState().setSelectedShow(id);
     setShowDetailsOpen(true);
@@ -95,14 +106,15 @@ export default function Home({ previewData, setShowDetailsOpen }: Props) {
 
   return (
     <Container>
+      {phase === 'LOADING' && <Loading>LOADING...</Loading>}
       <Carousel></Carousel>
       <BtnContainer>
         <Label>Sort By: </Label>
-        <SortByBtn onClick={(event) => handleSortClick('All', event)}>All</SortByBtn>
-        <SortByBtn onClick={(event) => handleSortClick('Latest', event)}>Latest</SortByBtn>
-        <SortByBtn onClick={(event) => handleSortClick('Oldest', event)}>Oldest</SortByBtn>
-        <SortByBtn onClick={(event) => handleSortClick('A-Z', event)}>A-Z</SortByBtn>
-        <SortByBtn onClick={(event) => handleSortClick('Z-A', event)}>Z-A</SortByBtn>
+        <SortByBtn onClick={() => handleSortClick('All')}>All</SortByBtn>
+        <SortByBtn onClick={() => handleSortClick('Latest')}>Latest</SortByBtn>
+        <SortByBtn onClick={() => handleSortClick('Oldest')}>Oldest</SortByBtn>
+        <SortByBtn onClick={() => handleSortClick('A-Z')}>A-Z</SortByBtn>
+        <SortByBtn onClick={() => handleSortClick('Z-A')}>Z-A</SortByBtn>
       </BtnContainer>
       <ShowGrid>
         {sortPreviews(sortByType).map((preview: Preview) => (

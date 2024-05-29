@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import { styled, ThemeProvider } from 'styled-components';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
@@ -6,12 +6,13 @@ import Login from './pages/Login';
 import Search from './pages/Search';
 import Sidebar from './components/Sidebar';
 import ShowDetailsOverlay from './components/ShowDetailsOverlay';
-import { useState, FC } from 'react';
+import { useState, FC, useEffect } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
 import { createApi } from './api/createApi';
 import { useStore } from 'zustand';
 import { createStore } from './model/useStore';
+import supabase from './utils/supabase';
 
 const Container = styled.div`
   display: flex;
@@ -31,16 +32,11 @@ const Frame = styled.div`
   flex: 3;
 `;
 
-const Loading = styled.div`
-  position: fixed;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.primary};
-  font-size: 20px;
-`;
+type User = {
+  id: string | undefined;
+  email: string | undefined;
+};
+
 export const api = createApi();
 export const store = createStore(api);
 
@@ -48,9 +44,20 @@ const App: FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
   const [showDetailsOpen, setShowDetailsOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const previewData = useStore(store, (state) => state.previewData);
   const phase = useStore(store, (state) => state.phase);
+  useEffect(() => {
+    supabase.auth.getUser().then((userData) => {
+      const user = userData.data.user;
+      if (user?.id === undefined) {
+        setUser(null);
+      } else {
+        setUser({ id: user.id, email: user?.email });
+      }
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -62,19 +69,33 @@ const App: FC = () => {
               setSideBarOpen={setSideBarOpen}
               setDarkMode={setDarkMode}
               darkMode={darkMode}
+              user={user}
             />
           )}
-          <Navbar setSideBarOpen={setSideBarOpen} />
+          <Navbar
+            setSideBarOpen={setSideBarOpen}
+            user={user}
+          />
           <Frame>
-            {phase === 'LOADING' && <Loading>LOADING...</Loading>}
             {showDetailsOpen && <ShowDetailsOverlay setShowDetailsOpen={setShowDetailsOpen} />}
+
             <Routes>
               <Route
                 path='/'
                 element={
+                  <Navigate
+                    replace
+                    to='/Home'
+                  />
+                }
+              />
+              <Route
+                path='/Home'
+                element={
                   <Home
                     setShowDetailsOpen={setShowDetailsOpen}
                     previewData={previewData}
+                    phase={phase}
                   />
                 }
               />
@@ -84,7 +105,13 @@ const App: FC = () => {
               />
               <Route
                 path='/Login'
-                element={<Login />}
+                element={
+                  <Login
+                    supabase={supabase}
+                    user={user}
+                    setUser={setUser}
+                  />
+                }
               />
               <Route
                 path='/Search'

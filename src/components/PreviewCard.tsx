@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import { IconButton } from '@mui/material';
-import { GENRES } from '../api/createApi';
+import { Preview } from '../api/createApi';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.card};
@@ -59,20 +57,12 @@ const Genres = styled.div``;
 const Updated = styled.div``;
 
 type Props = {
-  show: {
-    id: string;
-    title: string;
-    description: string;
-    seasons: number;
-    image: string;
-    genres: number[];
-    updated: string;
-  };
+  show: Preview;
 };
 
 function PreviewCard({ show }: Props) {
   const { title, description, image, seasons, genres, updated } = show;
-  const genreString = genres.map((id) => GENRES[id]).join(', ');
+  // const genreString = genres.map((id) => GENRES[id]).join(', ');
 
   return (
     <Container>
@@ -83,7 +73,7 @@ function PreviewCard({ show }: Props) {
         <Description>{description}</Description>
         <MetaInfo>
           <Seasons>Seasons: {seasons}</Seasons>
-          <Genres>Genres: {genreString}</Genres>
+          <Genres>Genres: {genres}</Genres>
           <Updated>Updated: {updated}</Updated>
         </MetaInfo>
       </Info>
