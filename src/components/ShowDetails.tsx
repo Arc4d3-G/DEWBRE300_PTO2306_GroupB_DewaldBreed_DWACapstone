@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Show } from '../api/createApi';
 import styled from 'styled-components';
 import EpisodeCard from './EpisodeCard';
@@ -100,6 +100,7 @@ export default function ShowDetails({ selectedShow }: Props) {
   const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
 
   console.log(selectedSeason);
+  console.log(selectedShow);
   const handleSeasonSelect = (value: string) => {
     setSelectedSeason(seasons[Number(value) - 1]);
   };
@@ -142,6 +143,8 @@ export default function ShowDetails({ selectedShow }: Props) {
             <EpisodeCard
               key={episode.episode}
               episode={episode}
+              selectedSeason={selectedSeason}
+              selectedShow={selectedShow}
             />
           ))}
         </Episodes>

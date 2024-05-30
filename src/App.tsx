@@ -9,10 +9,8 @@ import ShowDetailsOverlay from './components/ShowDetailsOverlay';
 import { useState, FC, useEffect } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
-import { createApi } from './api/createApi';
 import { useStore } from 'zustand';
-import { createStore } from './model/useStore';
-import supabase from './utils/supabase';
+import { store } from './main';
 
 const Container = styled.div`
   display: flex;
@@ -32,31 +30,17 @@ const Frame = styled.div`
   flex: 3;
 `;
 
-type User = {
-  id: string | undefined;
-  email: string | undefined;
-};
-
-export const api = createApi();
-export const store = createStore(api);
-
 const App: FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
   const [showDetailsOpen, setShowDetailsOpen] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
 
   const previewData = useStore(store, (state) => state.previewData);
   const phase = useStore(store, (state) => state.phase);
+  const user = useStore(store, (state) => state.user);
+
   useEffect(() => {
-    supabase.auth.getUser().then((userData) => {
-      const user = userData.data.user;
-      if (user?.id === undefined) {
-        setUser(null);
-      } else {
-        setUser({ id: user.id, email: user?.email });
-      }
-    });
+    store.getState().setUser();
   }, []);
 
   return (
@@ -78,7 +62,6 @@ const App: FC = () => {
           />
           <Frame>
             {showDetailsOpen && <ShowDetailsOverlay setShowDetailsOpen={setShowDetailsOpen} />}
-
             <Routes>
               <Route
                 path='/'
@@ -105,13 +88,7 @@ const App: FC = () => {
               />
               <Route
                 path='/Login'
-                element={
-                  <Login
-                    supabase={supabase}
-                    user={user}
-                    setUser={setUser}
-                  />
-                }
+                element={<Login user={user} />}
               />
               <Route
                 path='/Search'

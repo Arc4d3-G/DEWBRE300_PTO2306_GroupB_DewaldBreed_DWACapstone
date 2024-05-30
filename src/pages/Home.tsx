@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import PreviewCard from '../components/PreviewCard';
 import { Preview } from '../api/createApi';
-import { store } from '../App';
+
 import { useState } from 'react';
+import { store } from '../main';
 
 const Container = styled.div`
   padding: 20px 30px;

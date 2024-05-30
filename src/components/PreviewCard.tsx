@@ -62,7 +62,6 @@ type Props = {
 
 function PreviewCard({ show }: Props) {
   const { title, description, image, seasons, genres, updated } = show;
-  // const genreString = genres.map((id) => GENRES[id]).join(', ');
 
   return (
     <Container>

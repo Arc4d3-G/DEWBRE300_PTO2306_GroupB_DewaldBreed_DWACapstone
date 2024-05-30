@@ -1,5 +1,5 @@
 import React from 'react';
-import { Episode } from '../api/createApi';
+import { Episode, Season, Show } from '../api/createApi';
 import styled from 'styled-components';
 import { PlayCircleOutline as PlayIcon, FavoriteBorder as FavIcon } from '@mui/icons-material';
 
@@ -51,9 +51,11 @@ const Button = styled.div`
 
 type Props = {
   episode: Episode;
+  selectedSeason: Season;
+  selectedShow: Show;
 };
 
-export default function EpisodeCard({ episode }: Props) {
+export default function EpisodeCard({ episode, selectedSeason, selectedShow }: Props) {
   const { title, description, episode: episodeNum, file } = episode;
   return (
     <Container>
@@ -65,9 +67,11 @@ export default function EpisodeCard({ episode }: Props) {
         <Button>
           <PlayIcon fontSize='large' />
         </Button>
-        <Button>
-          <FavIcon fontSize='large' />
-        </Button>
+        {
+          <Button>
+            <FavIcon fontSize='large' />
+          </Button>
+        }
       </Buttons>
     </Container>
   );

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Fuse, { FuseResult } from 'fuse.js';
+import Fuse from 'fuse.js';
 import { Preview } from '../api/createApi';
 import PreviewCard from '../components/PreviewCard';
-import { store } from '../App';
+import { store } from '../main';
 
 const Container = styled.div`
   display: flex;

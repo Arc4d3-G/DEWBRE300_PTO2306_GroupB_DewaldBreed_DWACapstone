@@ -10,7 +10,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/podcast-logo.png';
-import { User } from '@supabase/supabase-js';
+import { User } from '../model/useStore';
 
 const DisableOutsideClick = styled.div`
   position: fixed;

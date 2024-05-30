@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import ShowDetails from './showDetails';
 import { CloseRounded as CloseIcon } from '@mui/icons-material';
 import { useStore } from 'zustand';
-import { store } from '../App';
+
 import { Show } from '../api/createApi';
+import { store } from '../main';
 
 const DisableOutsideClick = styled.div`
   position: fixed;
@@ -49,16 +50,7 @@ const CloseBtn = styled.div`
   margin: 5px;
   cursor: pointer;
 `;
-// const Loading = styled.div`
-//   position: fixed;
-//   display: flex;
-//   width: 100%;
-//   height: 100%;
-//   justify-content: center;
-//   align-items: center;
-//   color: ${({ theme }) => theme.primary};
-//   font-size: 20px;
-// `;
+
 type Props = {
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };

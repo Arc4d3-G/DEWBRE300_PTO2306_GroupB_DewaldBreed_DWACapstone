@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PersonRounded as LoginIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
-import { User } from '@supabase/supabase-js';
+import { User } from '../model/useStore';
 
 const Container = styled.div`
   display: flex;
