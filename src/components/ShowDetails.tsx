@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Show } from '../api/createApi';
 import styled from 'styled-components';
 import EpisodeCard from './EpisodeCard';
+import { store } from '../main';
+import supabase from '../utils/supabase';
 
 const ShowContainer = styled.div`
   width: 100%;
@@ -78,7 +80,16 @@ const Episodes = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-
+const Loading = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.primary};
+  font-size: 20px;
+`;
 // const HR = styled.div`
 //   width: 100%;
 //   height: 2px;
@@ -91,19 +102,28 @@ const SeasonSelect = styled.select`
   background-color: ${({ theme }) => theme.bg};
   border: 2px solid ${({ theme }) => theme.primary};
 `;
+
 type Props = {
   selectedShow: Show;
 };
 
 export default function ShowDetails({ selectedShow }: Props) {
-  const { image, title, description, genres, seasons } = selectedShow;
+  const { image, title, description, genres, seasons, id } = selectedShow;
   const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
+  // const [loading, setLoading] = useState(true);
 
-  console.log(selectedSeason);
-  console.log(selectedShow);
   const handleSeasonSelect = (value: string) => {
     setSelectedSeason(seasons[Number(value) - 1]);
   };
+
+  const showFavorites = store
+    .getState()
+    .user?.favorites?.filter(
+      (favorite) => favorite.show_id === id && favorite.season_num === selectedSeason.season
+    );
+  console.log(showFavorites);
+
+  // if (loading) return <Loading>LOADING...</Loading>;
   return (
     <ShowContainer>
       <Top>
@@ -139,14 +159,22 @@ export default function ShowDetails({ selectedShow }: Props) {
           </SeasonSelect>
         </SeasonContainer>
         <Episodes>
-          {selectedSeason.episodes.map((episode) => (
-            <EpisodeCard
-              key={episode.episode}
-              episode={episode}
-              selectedSeason={selectedSeason}
-              selectedShow={selectedShow}
-            />
-          ))}
+          {selectedSeason.episodes.map((episode) => {
+            const filtered = showFavorites?.filter(
+              (favorite) => favorite.episode_num === episode.episode
+            );
+
+            const isAlreadyFavorite = filtered?.length ? true : false;
+            return (
+              <EpisodeCard
+                key={episode.episode}
+                episode={episode}
+                selectedSeason={selectedSeason}
+                selectedShow={selectedShow}
+                isAlreadyFavorite={isAlreadyFavorite}
+              />
+            );
+          })}
         </Episodes>
       </Bottom>
     </ShowContainer>

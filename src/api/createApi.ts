@@ -69,7 +69,7 @@ export const getPreviewsList: Api['getPreviewsList'] = () => {
           day: 'numeric',
         }),
       }));
-      console.log(result);
+
       return result;
     });
   return result;

@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Episode, Season, Show } from '../api/createApi';
 import styled from 'styled-components';
-import { PlayCircleOutline as PlayIcon, FavoriteBorder as FavIcon } from '@mui/icons-material';
+import {
+  PlayCircleOutline as PlayIcon,
+  FavoriteBorder as FavHollowIcon,
+  Favorite as FavSolidIcon,
+} from '@mui/icons-material';
+import { store } from '../main';
+import supabase from '../utils/supabase';
+import { UserData } from '../model/useStore';
 
 const Container = styled.div`
   display: flex;
@@ -53,10 +60,47 @@ type Props = {
   episode: Episode;
   selectedSeason: Season;
   selectedShow: Show;
+  isAlreadyFavorite: boolean;
 };
 
-export default function EpisodeCard({ episode, selectedSeason, selectedShow }: Props) {
+export default function EpisodeCard({
+  episode,
+  selectedSeason,
+  selectedShow,
+  isAlreadyFavorite,
+}: Props) {
+  const user = store.getState().user;
+  const [isFavorite, setIsFavorite] = useState(false);
   const { title, description, episode: episodeNum, file } = episode;
+  useEffect(() => {
+    if (isAlreadyFavorite) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [isAlreadyFavorite]);
+
+  const handleFavClick = async () => {
+    const userData: UserData = {
+      user_id: user?.id,
+      show_id: selectedShow.id,
+      season_num: selectedSeason.season,
+      episode_num: episodeNum,
+      // timestamp: 0,
+    };
+    if (!user) return;
+
+    if (!isFavorite) {
+      const { data } = await supabase.from('UserData').insert(userData);
+      setIsFavorite(true);
+      store.getState().updateUserFavorites();
+    } else {
+      const { data } = await supabase.from('UserData').delete().match(userData);
+      setIsFavorite(false);
+      store.getState().updateUserFavorites();
+    }
+  };
+
   return (
     <Container>
       <Details>
@@ -67,11 +111,11 @@ export default function EpisodeCard({ episode, selectedSeason, selectedShow }: P
         <Button>
           <PlayIcon fontSize='large' />
         </Button>
-        {
-          <Button>
-            <FavIcon fontSize='large' />
+        {user && (
+          <Button onClick={() => handleFavClick()}>
+            {isFavorite ? <FavSolidIcon fontSize='large' /> : <FavHollowIcon fontSize='large' />}
           </Button>
-        }
+        )}
       </Buttons>
     </Container>
   );

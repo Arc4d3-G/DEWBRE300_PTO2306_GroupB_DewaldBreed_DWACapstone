@@ -56,13 +56,13 @@ type Props = {
 };
 
 export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
-  console.log('ShowDetails Render');
-
   const selectedShow: Show | null = useStore(store, (state) => state.selectedShow);
+
   const handleClose = () => {
     setShowDetailsOpen(false);
     store.setState({ selectedShow: null });
   };
+
   return (
     <DisableOutsideClick onClick={() => handleClose()}>
       <Container onClick={(e) => e.stopPropagation()}>
