@@ -121,7 +121,6 @@ export default function ShowDetails({ selectedShow }: Props) {
     .user?.favorites?.filter(
       (favorite) => favorite.show_id === id && favorite.season_num === selectedSeason.season
     );
-  console.log(showFavorites);
 
   // if (loading) return <Loading>LOADING...</Loading>;
   return (

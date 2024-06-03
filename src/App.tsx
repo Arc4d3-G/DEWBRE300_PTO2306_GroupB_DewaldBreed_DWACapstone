@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Search from './pages/Search';
 import Sidebar from './components/Sidebar';
 import ShowDetailsOverlay from './components/ShowDetailsOverlay';
+import AudioPlayer from './components/AudioPlayer';
 import { useState, FC, useEffect } from 'react';
 import { lightTheme, darkTheme } from './utils/themes';
 import Navbar from './components/Navbar';
@@ -28,6 +29,7 @@ const Frame = styled.div`
   display: flex;
   flex-direction: column;
   flex: 3;
+  /* margin-bottom: 200px; */
 `;
 
 const App: FC = () => {
@@ -38,6 +40,7 @@ const App: FC = () => {
   const previewData = useStore(store, (state) => state.previewData);
   const phase = useStore(store, (state) => state.phase);
   const user = useStore(store, (state) => state.user);
+  const currentlyPlaying = useStore(store, (state) => state.currentlyPlaying);
 
   useEffect(() => {
     store.getState().setUser();
@@ -84,7 +87,12 @@ const App: FC = () => {
               />
               <Route
                 path='/Favourites'
-                element={<Favourites />}
+                element={
+                  <Favourites
+                    previewData={previewData}
+                    phase={phase}
+                  />
+                }
               />
               <Route
                 path='/Login'
@@ -101,6 +109,7 @@ const App: FC = () => {
               />
             </Routes>
           </Frame>
+          {currentlyPlaying && <AudioPlayer />}
         </Container>
       </BrowserRouter>
     </ThemeProvider>

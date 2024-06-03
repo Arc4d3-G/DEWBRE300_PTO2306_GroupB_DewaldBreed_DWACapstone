@@ -6,7 +6,7 @@ import { User } from '../model/useStore';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  /* width: 100%; */
+
   padding: 16px 40px;
   align-items: center;
   color: ${({ theme }) => theme.text_primary};
@@ -67,7 +67,7 @@ const Navbar = ({ setSideBarOpen, user }: Props) => {
         <Link to='/Login'>
           <ButtonDiv>
             <LoginIcon />
-            {user === null ? 'Login' : user.email}
+            {user === null ? 'Login' : user.email?.substring(0, user.email.lastIndexOf('@'))}
           </ButtonDiv>
         </Link>
       </Right>

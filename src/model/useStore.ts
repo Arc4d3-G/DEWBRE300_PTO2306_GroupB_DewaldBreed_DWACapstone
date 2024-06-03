@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Api, Preview, Show } from '../api/createApi';
+import { Api, Episode, Preview, Show } from '../api/createApi';
 import supabase from '../utils/supabase';
 
 export type UserData = {
@@ -8,6 +8,7 @@ export type UserData = {
   season_num: number;
   episode_num: number;
 };
+
 export type User = {
   id: string | undefined;
   email: string | undefined;
@@ -22,6 +23,8 @@ type GlobalStore = {
   user: User | null;
   setUser: () => void;
   updateUserFavorites: () => void;
+  currentlyPlaying: Episode | null;
+  isPlaying: boolean;
 };
 
 export const createStore = (api: Api) => {
@@ -30,6 +33,8 @@ export const createStore = (api: Api) => {
     previewData: [],
     selectedShow: null,
     user: null,
+    currentlyPlaying: null,
+    isPlaying: false,
 
     setSelectedShow: (id: string) => {
       set({ phase: 'LOADING' });

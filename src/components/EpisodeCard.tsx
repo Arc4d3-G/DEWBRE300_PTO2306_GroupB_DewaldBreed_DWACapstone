@@ -9,6 +9,7 @@ import {
 import { store } from '../main';
 import supabase from '../utils/supabase';
 import { UserData } from '../model/useStore';
+import { useStore } from 'zustand';
 
 const Container = styled.div`
   display: flex;
@@ -71,14 +72,21 @@ export default function EpisodeCard({
 }: Props) {
   const user = store.getState().user;
   const [isFavorite, setIsFavorite] = useState(false);
-  const { title, description, episode: episodeNum, file } = episode;
+  const { title, description, episode: episodeNum } = episode;
+  const currentlyPlaying = useStore(store, (state) => state.currentlyPlaying);
+
   useEffect(() => {
-    if (isAlreadyFavorite) {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
+    setIsFavorite(isAlreadyFavorite);
   }, [isAlreadyFavorite]);
+
+  const handlePlayClick = () => {
+    if (currentlyPlaying === episode) {
+      return;
+    } else {
+      store.setState({ currentlyPlaying: episode });
+      store.setState({ isPlaying: true });
+    }
+  };
 
   const handleFavClick = async () => {
     const userData: UserData = {
@@ -86,8 +94,8 @@ export default function EpisodeCard({
       show_id: selectedShow.id,
       season_num: selectedSeason.season,
       episode_num: episodeNum,
-      // timestamp: 0,
     };
+
     if (!user) return;
 
     if (!isFavorite) {
@@ -104,11 +112,11 @@ export default function EpisodeCard({
   return (
     <Container>
       <Details>
-        <Title>{`#${episodeNum} - ${title}`}</Title>
+        <Title>{`S${selectedSeason.season}E${episodeNum} - ${title}`}</Title>
         <Description>{description ? description : 'No description found'}</Description>
       </Details>
       <Buttons>
-        <Button>
+        <Button onClick={() => handlePlayClick()}>
           <PlayIcon fontSize='large' />
         </Button>
         {user && (
