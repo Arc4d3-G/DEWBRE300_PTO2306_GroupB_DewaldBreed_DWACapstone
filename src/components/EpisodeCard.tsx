@@ -22,6 +22,9 @@ const Container = styled.div`
 `;
 
 const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin: 10px;
   width: 80%;
 `;
@@ -37,7 +40,7 @@ const Description = styled.div`
   max-width: 100%;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   color: ${({ theme }) => theme.text_secondary};
@@ -61,6 +64,7 @@ type Props = {
   selectedSeason: number;
   selectedShow: string;
   isAlreadyFavorite: boolean;
+  favoriteDate: string | null;
 };
 
 export default function EpisodeCard({
@@ -68,11 +72,20 @@ export default function EpisodeCard({
   selectedSeason,
   selectedShow,
   isAlreadyFavorite,
+  favoriteDate,
 }: Props) {
   const user = store.getState().user;
   const [isFavorite, setIsFavorite] = useState(false);
   const { title, description, episode: episodeNum } = episode;
   const currentlyPlaying = useStore(store, (state) => state.currentlyPlaying);
+
+  const formattedDate = favoriteDate
+    ? new Date(favoriteDate).toLocaleDateString('en-gb', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
 
   useEffect(() => {
     setIsFavorite(isAlreadyFavorite);
@@ -113,6 +126,9 @@ export default function EpisodeCard({
       <Details>
         <Title>{`S${selectedSeason}E${episodeNum} - ${title}`}</Title>
         <Description>{description ? description : 'No description found'}</Description>
+        {isFavorite && formattedDate && (
+          <Description>Added to favorites on {formattedDate}</Description>
+        )}
       </Details>
       <Buttons>
         <Button onClick={() => handlePlayClick()}>

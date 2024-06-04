@@ -46,14 +46,68 @@ const ShowGrid = styled.div`
   gap: 20px;
 `;
 
-const CardContainer = styled.div``;
-
 const FavoriteContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 60%;
+  min-width: 300px;
+  height: 100%;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.bg};
 `;
 
-const Episodes = styled.div``;
+const Image = styled.img`
+  width: 220px;
+  height: 220px;
+  border-radius: 6px;
+`;
+
+const Top = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+`;
+const MetaInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  gap: 10px;
+`;
+
+const Title = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-weight: bold;
+  font-size: 15px;
+`;
+
+const Description = styled.div`
+  color: ${({ theme }) => theme.text_secondary};
+  margin: 0;
+`;
+
+const Updated = styled.div`
+  color: ${({ theme }) => theme.text_secondary};
+  margin: 0;
+  font-size: 10px;
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const Episodes = styled.div`
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 const Loading = styled.div`
   position: fixed;
@@ -78,7 +132,44 @@ export default function Favourites({ previewData, phase }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [favorites, setFavorites] = useState<Favorite[]>();
 
-  // const showIdArray = [...new Set(userFavorites?.map((favorite) => favorite.show_id))];
+  const favoriteShowArray = [
+    ...new Set(
+      userFavorites?.map((favorite) => previewData.find((show) => show.id === favorite.show_id)!)
+    ),
+  ];
+
+  const sortFavorites = (sortByType: string): Preview[] => {
+    switch (sortByType) {
+      case 'All':
+        return favoriteShowArray;
+      case 'Latest':
+        return favoriteShowArray.toSorted((a, b) => {
+          const aDate = new Date(a.updated);
+          const bDate = new Date(b.updated);
+          return bDate.getTime() - aDate.getTime();
+        });
+
+      case 'Oldest':
+        return favoriteShowArray.toSorted((a, b) => {
+          const aDate = new Date(a.updated);
+          const bDate = new Date(b.updated);
+          return aDate.getTime() - bDate.getTime();
+        });
+
+      case 'A-Z':
+        return favoriteShowArray.toSorted((a, b) => {
+          return a.title.localeCompare(b.title);
+        });
+
+      case 'Z-A':
+        return favoriteShowArray.toSorted((a, b) => {
+          return b.title.localeCompare(a.title);
+        });
+
+      default:
+        return favoriteShowArray;
+    }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -90,39 +181,6 @@ export default function Favourites({ previewData, phase }: Props) {
         setIsLoading(false);
       });
   }, [userFavorites]);
-
-  const sortPreviews = (sortByType: string): Preview[] => {
-    switch (sortByType) {
-      case 'All':
-        return previewData;
-      case 'Latest':
-        return previewData.toSorted((a, b) => {
-          const aDate = new Date(a.updated);
-          const bDate = new Date(b.updated);
-          return bDate.getTime() - aDate.getTime();
-        });
-
-      case 'Oldest':
-        return previewData.toSorted((a, b) => {
-          const aDate = new Date(a.updated);
-          const bDate = new Date(b.updated);
-          return aDate.getTime() - bDate.getTime();
-        });
-
-      case 'A-Z':
-        return previewData.toSorted((a, b) => {
-          return a.title.localeCompare(b.title);
-        });
-
-      case 'Z-A':
-        return previewData.toSorted((a, b) => {
-          return b.title.localeCompare(a.title);
-        });
-
-      default:
-        return previewData;
-    }
-  };
 
   const handleSortClick = (sortKey: string) => {
     setSortByType(sortKey);
@@ -140,20 +198,40 @@ export default function Favourites({ previewData, phase }: Props) {
         <SortByBtn onClick={() => handleSortClick('Z-A')}>Z-A</SortByBtn>
       </BtnContainer>
       <ShowGrid>
-        <Episodes>
-          {favorites &&
-            favorites.map((favorite) => {
-              return (
-                <EpisodeCard
-                  key={favorite.added_date}
-                  episode={favorite.episode}
-                  selectedSeason={favorite.season_num}
-                  selectedShow={favorite.show_Id}
-                  isAlreadyFavorite={true}
-                />
-              );
-            })}
-        </Episodes>
+        {favoriteShowArray &&
+          sortFavorites(sortByType).map((show) => {
+            return (
+              <FavoriteContainer key={show?.id}>
+                <Top>
+                  <Image src={show?.image} />
+                  <MetaInfo>
+                    <Title>{show?.title}</Title>
+                    <Description>{show?.description}</Description>
+                    <Updated>Updated: {show?.updated}</Updated>
+                  </MetaInfo>
+                </Top>
+                <Bottom>
+                  <Episodes>
+                    {show &&
+                      favorites?.map((favorite) => {
+                        if (favorite.show_Id === show.id) {
+                          return (
+                            <EpisodeCard
+                              key={favorite.added_date}
+                              episode={favorite.episode}
+                              selectedSeason={favorite.season_num}
+                              selectedShow={favorite.show_Id}
+                              isAlreadyFavorite={true}
+                              favoriteDate={favorite.added_date}
+                            />
+                          );
+                        }
+                      })}
+                  </Episodes>
+                </Bottom>
+              </FavoriteContainer>
+            );
+          })}
       </ShowGrid>
     </Container>
   );

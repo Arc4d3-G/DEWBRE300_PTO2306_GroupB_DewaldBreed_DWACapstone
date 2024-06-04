@@ -170,6 +170,7 @@ export default function ShowDetails({ selectedShow }: Props) {
                 selectedSeason={selectedSeason.season}
                 selectedShow={selectedShow.id}
                 isAlreadyFavorite={isAlreadyFavorite}
+                favoriteDate={null}
               />
             );
           })}
