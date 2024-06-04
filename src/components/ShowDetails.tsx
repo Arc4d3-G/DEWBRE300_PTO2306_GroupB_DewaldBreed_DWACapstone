@@ -168,8 +168,8 @@ export default function ShowDetails({ selectedShow }: Props) {
               <EpisodeCard
                 key={episode.episode}
                 episode={episode}
-                selectedSeason={selectedSeason}
-                selectedShow={selectedShow}
+                selectedSeason={selectedSeason.season}
+                selectedShow={selectedShow.id}
                 isAlreadyFavorite={isAlreadyFavorite}
               />
             );

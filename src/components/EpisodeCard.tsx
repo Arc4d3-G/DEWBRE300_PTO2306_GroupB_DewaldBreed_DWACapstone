@@ -59,8 +59,8 @@ const Button = styled.div`
 
 type Props = {
   episode: Episode;
-  selectedSeason: Season;
-  selectedShow: Show;
+  selectedSeason: number;
+  selectedShow: string;
   isAlreadyFavorite: boolean;
 };
 
@@ -89,10 +89,10 @@ export default function EpisodeCard({
   };
 
   const handleFavClick = async () => {
-    const userData: UserData = {
+    const userData = {
       user_id: user?.id,
-      show_id: selectedShow.id,
-      season_num: selectedSeason.season,
+      show_id: selectedShow,
+      season_num: selectedSeason,
       episode_num: episodeNum,
     };
 
@@ -112,7 +112,7 @@ export default function EpisodeCard({
   return (
     <Container>
       <Details>
-        <Title>{`S${selectedSeason.season}E${episodeNum} - ${title}`}</Title>
+        <Title>{`S${selectedSeason}E${episodeNum} - ${title}`}</Title>
         <Description>{description ? description : 'No description found'}</Description>
       </Details>
       <Buttons>

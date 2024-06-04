@@ -5,7 +5,7 @@ import { api, store } from '../main';
 import PreviewCard from '../components/PreviewCard';
 import EpisodeCard from '../components/EpisodeCard';
 import { useStore } from 'zustand';
-import { UserData } from '../model/useStore';
+import { Favorite, UserData } from '../model/useStore';
 
 const Container = styled.div`
   padding: 20px 30px;
@@ -76,15 +76,21 @@ export default function Favourites({ previewData, phase }: Props) {
   const [sortByType, setSortByType] = useState('');
   const userFavorites = store.getState().user?.favorites;
   const [isLoading, setIsLoading] = useState(false);
-  const [favorites, setFavorites] = useState<Favorite[] | undefined>();
+  const [favorites, setFavorites] = useState<Favorite[]>();
 
-  const showIdArray = [...new Set(userFavorites?.map((favorite) => favorite.show_id))];
+  // const showIdArray = [...new Set(userFavorites?.map((favorite) => favorite.show_id))];
 
-  type Favorite = {
-    show_Id: string;
-    season_num: number;
-    episode: Episode;
-  };
+  useEffect(() => {
+    setIsLoading(true);
+    store
+      .getState()
+      .parseUserData()
+      .then((result) => {
+        setFavorites(result);
+        setIsLoading(false);
+      });
+    console.log(favorites);
+  }, [userFavorites]);
 
   // useEffect(() => {
   //   const getFavData = async () => {
@@ -176,10 +182,18 @@ export default function Favourites({ previewData, phase }: Props) {
       </BtnContainer>
       <ShowGrid>
         <Episodes>
-          {/* {favorites &&
-            favorites.map((data) => {
-              return <>{data.episode.title}</>;
-            })} */}
+          {favorites &&
+            favorites.map((favorite) => {
+              return (
+                <EpisodeCard
+                  key={favorite.added_date}
+                  episode={favorite.episode}
+                  selectedSeason={favorite.season_num}
+                  selectedShow={favorite.show_Id}
+                  isAlreadyFavorite={true}
+                />
+              );
+            })}
         </Episodes>
       </ShowGrid>
     </Container>
