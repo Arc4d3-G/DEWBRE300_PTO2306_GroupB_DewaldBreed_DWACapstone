@@ -72,7 +72,7 @@ function PreviewCard({ show }: Props) {
         <Description>{description}</Description>
         <MetaInfo>
           <Seasons>Seasons: {seasons}</Seasons>
-          <Genres>Genres: {genres}</Genres>
+          <Genres>Genres: {genres.join(', ')}</Genres>
           <Updated>Updated: {updated}</Updated>
         </MetaInfo>
       </Info>

@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Show } from '../api/createApi';
 import styled from 'styled-components';
 import EpisodeCard from './EpisodeCard';
 import { store } from '../main';
-import supabase from '../utils/supabase';
 
 const ShowContainer = styled.div`
   width: 100%;
@@ -80,16 +79,16 @@ const Episodes = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-const Loading = styled.div`
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.primary};
-  font-size: 20px;
-`;
+// const Loading = styled.div`
+//   position: fixed;
+//   left: 50%;
+//   top: 50%;
+//   transform: translate(-50%, -50%);
+//   justify-content: center;
+//   align-items: center;
+//   color: ${({ theme }) => theme.primary};
+//   font-size: 20px;
+// `;
 // const HR = styled.div`
 //   width: 100%;
 //   height: 2px;

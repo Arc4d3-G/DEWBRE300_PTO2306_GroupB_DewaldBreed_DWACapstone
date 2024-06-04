@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Episode, Season, Show } from '../api/createApi';
+import { Episode } from '../api/createApi';
 import styled from 'styled-components';
 import {
   PlayCircleOutline as PlayIcon,
@@ -8,7 +8,6 @@ import {
 } from '@mui/icons-material';
 import { store } from '../main';
 import supabase from '../utils/supabase';
-import { UserData } from '../model/useStore';
 import { useStore } from 'zustand';
 
 const Container = styled.div`
@@ -99,11 +98,11 @@ export default function EpisodeCard({
     if (!user) return;
 
     if (!isFavorite) {
-      const { data } = await supabase.from('UserData').insert(userData);
+      await supabase.from('UserData').insert(userData);
       setIsFavorite(true);
       store.getState().updateUserFavorites();
     } else {
-      const { data } = await supabase.from('UserData').delete().match(userData);
+      await supabase.from('UserData').delete().match(userData);
       setIsFavorite(false);
       store.getState().updateUserFavorites();
     }

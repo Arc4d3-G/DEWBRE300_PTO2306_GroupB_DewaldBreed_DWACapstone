@@ -89,48 +89,7 @@ export default function Favourites({ previewData, phase }: Props) {
         setFavorites(result);
         setIsLoading(false);
       });
-    console.log(favorites);
   }, [userFavorites]);
-
-  // useEffect(() => {
-  //   const getFavData = async () => {
-  //     setIsLoading(true);
-  //     if (!userFavorites) return;
-  //     const results: Favorite[] | undefined = [];
-
-  //     // for (const showId of showIdArray) {
-  //     //   const favoriteEpisodes = userFavorites?.filter((favorite) => favorite.show_id === showId);
-  //     //   api.getShowDetails(showId).then((data) => {
-  //     //     for (const episode of favoriteEpisodes) {
-  //     //       results.push({
-  //     //         show_Id: data.id,
-  //     //         season_num: data.seasons[episode.season_num],
-  //     //         episode: data.seasons[episode.season_num].episodes[episode.episode_num],
-  //     //       });
-  //     //     }
-  //     //   });
-  //     // }
-  //     for (const favorite of userFavorites) {
-  //       api.getShowDetails(favorite.show_id).then((data: Show) => {
-  //         const match = data.seasons
-  //           .find((season: Season) => season.season === favorite.season_num)
-  //           ?.episodes.find((episode: Episode) => episode.episode === favorite.episode_num);
-  //         match &&
-  //           results.push({
-  //             show_Id: favorite.show_id,
-  //             season_num: favorite.season_num,
-  //             episode: match,
-  //           });
-  //       });
-  //     }
-
-  //     setFavorites(results);
-  //     setIsLoading(false);
-  //   };
-  //   getFavData();
-
-  //   console.log(favorites);
-  // }, [userFavorites]);
 
   const sortPreviews = (sortByType: string): Preview[] => {
     switch (sortByType) {

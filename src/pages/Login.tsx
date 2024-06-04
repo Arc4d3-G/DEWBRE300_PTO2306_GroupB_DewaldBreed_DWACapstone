@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../App';
 import { store } from '../main';
 import supabase from '../utils/supabase';
+import { User } from '../model/useStore';
 
 const Container = styled.div`
   display: flex;
@@ -46,7 +45,7 @@ const LogOutBtn = styled.div`
 `;
 
 type Props = {
-  user: User;
+  user: User | null;
 };
 
 export default function Login({ user }: Props) {
