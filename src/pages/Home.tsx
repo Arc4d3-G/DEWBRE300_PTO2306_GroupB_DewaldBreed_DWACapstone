@@ -4,12 +4,13 @@ import { Preview } from '../api/createApi';
 import { GENRES } from '../api/createApi';
 import { useState } from 'react';
 import { store } from '../main';
+import Carousel from '../components/Carousel';
 
 const Container = styled.div`
   padding: 20px 30px;
   height: 100%;
+  margin-bottom: 70px;
 `;
-const Carousel = styled.div``;
 
 const BtnContainer = styled.div`
   display: flex;
@@ -44,6 +45,8 @@ const ShowGrid = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 `;
+const CardContainer = styled.div``;
+
 const GenreSelect = styled.select`
   width: 150px;
   color: ${({ theme }) => theme.text_secondary};
@@ -61,7 +64,6 @@ const Loading = styled.div`
   font-size: 20px;
 `;
 
-const CardContainer = styled.div``;
 type Props = {
   previewData: Preview[];
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -128,7 +130,10 @@ export default function Home({ previewData, setShowDetailsOpen, phase }: Props) 
   return (
     <Container>
       {phase === 'LOADING' && <Loading>LOADING...</Loading>}
-      <Carousel></Carousel>
+      {/* <Carousel
+        previewData={previewData}
+        setShowDetailsOpen={setShowDetailsOpen}
+      /> */}
       <BtnContainer>
         <Label>Sort By: </Label>
         {sortValues.map((sortBy, index) => {

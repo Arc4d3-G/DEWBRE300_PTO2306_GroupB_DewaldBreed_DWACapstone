@@ -15,7 +15,7 @@ const ShowContainer = styled.div`
 
 const Image = styled.img`
   max-width: 280px;
-  /* height: 280px; */
+  border-radius: 6px;
 `;
 
 const Top = styled.div`
@@ -31,6 +31,7 @@ const MetaInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 300px;
   max-width: 400px;
   gap: 10px;
 `;
@@ -43,6 +44,8 @@ const Title = styled.div`
 const Description = styled.div`
   color: ${({ theme }) => theme.text_secondary};
   margin: 0;
+  max-height: 270px;
+  overflow-y: scroll;
 `;
 const Genres = styled.div`
   display: flex;
@@ -125,7 +128,7 @@ export default function ShowDetails({ selectedShow }: Props) {
   return (
     <ShowContainer>
       <Top>
-        <Image src={image} />
+        <Image src={selectedSeason.image} />
         <MetaInfo>
           <Title>{title}</Title>
           <Description>{description}</Description>

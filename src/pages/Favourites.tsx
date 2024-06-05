@@ -10,6 +10,7 @@ import { Favorite, UserData } from '../model/useStore';
 const Container = styled.div`
   padding: 20px 30px;
   height: 100%;
+  margin-bottom: 70px;
 `;
 
 const BtnContainer = styled.div`
@@ -198,7 +199,8 @@ export default function Favourites({ previewData, phase }: Props) {
         <SortByBtn onClick={() => handleSortClick('Z-A')}>Z-A</SortByBtn>
       </BtnContainer>
       <ShowGrid>
-        {favoriteShowArray &&
+        {!isLoading &&
+          favoriteShowArray &&
           sortFavorites(sortByType).map((show) => {
             return (
               <FavoriteContainer key={show?.id}>
