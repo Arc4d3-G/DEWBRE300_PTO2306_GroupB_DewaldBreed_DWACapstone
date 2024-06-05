@@ -94,7 +94,17 @@ export default function AudioPlayer({}: Props) {
     } else {
       audioElem.current?.pause();
     }
-    console.log('useEffect');
+
+    if (!store.getState().isPlaying) return;
+
+    function handleBeforeUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      return (event.returnValue = '');
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload, { capture: true });
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
+    };
   }, [isPlaying, currentlyPlaying]);
 
   const onPlaying = () => {
