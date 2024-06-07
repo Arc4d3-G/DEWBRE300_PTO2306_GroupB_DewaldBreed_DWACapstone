@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import ShowDetails from './showDetails';
 import { CloseRounded as CloseIcon } from '@mui/icons-material';
 import { useStore } from 'zustand';
-
 import { Show } from '../api/createApi';
 import { store } from '../main';
+import ShowDetails from './ShowDetails';
 
 const DisableOutsideClick = styled.div`
   position: fixed;
