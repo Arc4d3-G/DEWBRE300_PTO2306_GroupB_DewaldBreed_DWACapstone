@@ -3,6 +3,7 @@ import { Show } from '../api/createApi';
 import styled from 'styled-components';
 import EpisodeCard from './EpisodeCard';
 import { store } from '../main';
+import { useStore } from 'zustand';
 
 const ShowContainer = styled.div`
   width: 100%;
@@ -82,16 +83,16 @@ const Episodes = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-// const Loading = styled.div`
-//   position: fixed;
-//   left: 50%;
-//   top: 50%;
-//   transform: translate(-50%, -50%);
-//   justify-content: center;
-//   align-items: center;
-//   color: ${({ theme }) => theme.primary};
-//   font-size: 20px;
-// `;
+const Loading = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.primary};
+  font-size: 20px;
+`;
 // const HR = styled.div`
 //   width: 100%;
 //   height: 2px;
@@ -112,7 +113,7 @@ type Props = {
 export default function ShowDetails({ selectedShow }: Props) {
   const { title, description, genres, seasons, id } = selectedShow;
   const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
-  // const [loading, setLoading] = useState(true);
+  const phase = useStore(store, (state) => state.phase);
 
   const handleSeasonSelect = (value: string) => {
     setSelectedSeason(seasons[Number(value) - 1]);
@@ -124,9 +125,11 @@ export default function ShowDetails({ selectedShow }: Props) {
       (favorite) => favorite.show_id === id && favorite.season_num === selectedSeason.season
     );
 
-  // if (loading) return <Loading>LOADING...</Loading>;
+  if (phase === 'LOADING') return <Loading>LOADING...</Loading>;
+
   return (
     <ShowContainer>
+      {/* {phase === 'LOADING' && <Loading>LOADING...</Loading>} */}
       <Top>
         <Image src={selectedSeason.image} />
         <MetaInfo>

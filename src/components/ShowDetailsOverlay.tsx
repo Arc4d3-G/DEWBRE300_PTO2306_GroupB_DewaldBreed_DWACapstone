@@ -12,7 +12,7 @@ const DisableOutsideClick = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  /* z-index: 10000; */
+  z-index: 100;
   backdrop-filter: blur(6px);
 `;
 
@@ -50,6 +50,16 @@ const CloseBtn = styled.div`
   margin: 5px;
   cursor: pointer;
 `;
+const Loading = styled.div`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.primary};
+  font-size: 20px;
+`;
 
 type Props = {
   setShowDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,6 +67,7 @@ type Props = {
 
 export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
   const selectedShow: Show | null = useStore(store, (state) => state.selectedShow);
+  const phase = useStore(store, (state) => state.phase);
 
   const handleClose = () => {
     setShowDetailsOpen(false);
@@ -70,7 +81,7 @@ export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
           <CloseBtn onClick={() => handleClose()}>
             <CloseIcon />
           </CloseBtn>
-          {/* {selectedShow === null && <Loading>LOADING SHOW...</Loading>} */}
+          {phase === 'LOADING' && <Loading>LOADING...</Loading>}
           {selectedShow && <ShowDetails selectedShow={selectedShow} />}
         </Dialog>
       </Container>

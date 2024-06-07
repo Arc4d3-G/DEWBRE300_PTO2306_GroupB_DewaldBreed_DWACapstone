@@ -4,12 +4,56 @@ import { Preview } from '../api/createApi';
 import { GENRES } from '../api/createApi';
 import { useState } from 'react';
 import { store } from '../main';
-// import Carousel from '../components/Carousel';
+import Carousel from '../components/Carousel';
 
 const Container = styled.div`
   padding: 20px 30px;
   height: 100%;
   margin-bottom: 70px;
+`;
+
+const Header1 = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-size: 30px;
+  font-weight: bold;
+  margin: 10px;
+  padding-left: 120px;
+
+  @media (max-width: 1100px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0px;
+  }
+  @media (max-width: 670px) {
+    display: none;
+  }
+`;
+
+const Header2 = styled.div`
+  color: ${({ theme }) => theme.primary};
+  font-size: 30px;
+  font-weight: bold;
+  margin: 10px;
+  padding-left: 120px;
+
+  @media (max-width: 1100px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0px;
+  }
+`;
+
+const CarouselContainer = styled.div`
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: ${({ theme }) => theme.bg};
+  padding: 40px 50px;
+  @media (max-width: 670px) {
+    display: none;
+  }
 `;
 
 const BtnContainer = styled.div`
@@ -18,6 +62,22 @@ const BtnContainer = styled.div`
   gap: 10px;
   justify-content: center;
   margin: 10px;
+  align-items: center;
+`;
+
+const DiscoverContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* width: 0%;
+  margin-left: auto;
+  margin-right: auto; */
+`;
+
+const SortContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -127,63 +187,74 @@ export default function Home({ previewData, setShowDetailsOpen, phase }: Props) 
     setShowDetailsOpen(true);
   };
 
+  // if (phase === 'LOADING') return ;
+
   return (
     <Container>
       {phase === 'LOADING' && <Loading>LOADING...</Loading>}
-      {/* <Carousel
-        previewData={previewData}
-        setShowDetailsOpen={setShowDetailsOpen}
-      /> */}
-      <BtnContainer>
-        <Label>Sort By: </Label>
-        {sortValues.map((sortBy, index) => {
-          return (
-            <SortByBtn
-              key={index}
-              onClick={() => handleSortClick(sortBy)}
+      <Header1>Featured</Header1>
+      <CarouselContainer>
+        <Carousel
+          previewData={previewData}
+          setShowDetailsOpen={setShowDetailsOpen}
+        />
+      </CarouselContainer>
+      <Header2>Discover</Header2>
+      <DiscoverContainer>
+        <SortContainer>
+          <BtnContainer>
+            <Label>Sort By: </Label>
+            {sortValues.map((sortBy, index) => {
+              return (
+                <SortByBtn
+                  key={index}
+                  onClick={() => handleSortClick(sortBy)}
+                >
+                  {sortBy}
+                </SortByBtn>
+              );
+            })}
+          </BtnContainer>
+          <BtnContainer>
+            <Label>Genre: </Label>
+            <GenreSelect
+              name='genres'
+              id='genres'
+              onChange={(event) => handleGenreSelect(event.target.value)}
             >
-              {sortBy}
-            </SortByBtn>
-          );
-        })}
-      </BtnContainer>
-      <BtnContainer>
-        <Label>Genre: </Label>
-        <GenreSelect
-          name='genres'
-          id='genres'
-          onChange={(event) => handleGenreSelect(event.target.value)}
-        >
-          <option
-            key={0}
-            value={'All'}
-          >
-            All
-          </option>
-          {Object.entries(GENRES).map((genre) => {
-            const key = genre[0];
-            const value = genre[1];
-            return (
               <option
-                key={key + 1}
-                value={value}
+                key={0}
+                value={'All'}
               >
-                {value}
+                All
               </option>
-            );
-          })}
-        </GenreSelect>
-      </BtnContainer>
-      <ShowGrid>
-        {sortPreviews(sortByType, filterPreviews(filterBy)).map((preview: Preview) => (
-          <CardContainer
-            key={preview.id}
-            onClick={() => handleCardClick(preview.id)}
-          >
-            <PreviewCard show={preview} />
-          </CardContainer>
-        ))}
-      </ShowGrid>
+              {Object.entries(GENRES).map((genre) => {
+                const key = genre[0];
+                const value = genre[1];
+                return (
+                  <option
+                    key={key + 1}
+                    value={value}
+                  >
+                    {value}
+                  </option>
+                );
+              })}
+            </GenreSelect>
+          </BtnContainer>
+        </SortContainer>
+
+        <ShowGrid>
+          {sortPreviews(sortByType, filterPreviews(filterBy)).map((preview: Preview) => (
+            <CardContainer
+              key={preview.id}
+              onClick={() => handleCardClick(preview.id)}
+            >
+              <PreviewCard show={preview} />
+            </CardContainer>
+          ))}
+        </ShowGrid>
+      </DiscoverContainer>
     </Container>
   );
 }

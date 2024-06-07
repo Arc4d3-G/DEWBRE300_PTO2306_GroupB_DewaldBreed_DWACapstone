@@ -130,6 +130,7 @@ export default function Favourites({ previewData, phase }: Props) {
   const userFavorites = store.getState().user?.favorites;
   const [isLoading, setIsLoading] = useState(false);
   const [favorites, setFavorites] = useState<Favorite[]>();
+  const user = store.getState().user;
 
   const favoriteShowArray = [
     ...new Set(
@@ -188,6 +189,10 @@ export default function Favourites({ previewData, phase }: Props) {
   return (
     <Container>
       {phase === 'LOADING' && <Loading>LOADING...</Loading>}
+      {!user && <Loading>Log In To See Favorites</Loading>}
+      {user && !favoriteShowArray.length && (
+        <Loading>Start Adding Favorites To View Them Here</Loading>
+      )}
       <BtnContainer>
         <Label>Sort By: </Label>
         <SortByBtn onClick={() => handleSortClick('All')}>All</SortByBtn>

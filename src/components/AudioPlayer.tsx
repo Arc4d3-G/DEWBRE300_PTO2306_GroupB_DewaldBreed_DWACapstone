@@ -23,6 +23,7 @@ const Container = styled.div`
   transition: 0.5s;
   padding: 20px 0px;
   color: ${({ theme }) => theme.primary};
+  z-index: 101;
 `;
 
 const PlayerContainer = styled.div`
@@ -148,30 +149,35 @@ export default function AudioPlayer() {
   const elapsedDisplay = formatDurationDisplay(currentProgress);
 
   useEffect(() => {
-    console.log('use Effect');
     if (isPlaying && audioElem.current) {
-      audioElem.current.currentTime = 0;
       audioElem.current?.play();
     } else {
       audioElem.current?.pause();
     }
+  }, [isPlaying]);
 
-    if (!store.getState().isPlaying) return;
-
+  useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
       event.preventDefault();
       return (event.returnValue = '');
     }
-    window.addEventListener('beforeunload', handleBeforeUnload, { capture: true });
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
-    };
-  }, [isPlaying, currentlyPlaying]);
+
+    if (isPlaying) {
+      window.addEventListener('beforeunload', handleBeforeUnload, { capture: true });
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
+      };
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
-    console.log('useEffect 2');
     if (audioElem.current) audioElem.current.volume = volume;
   }, [volume]);
+
+  useEffect(() => {
+    console.log('1');
+    if (audioElem.current) audioElem.current.currentTime = 0;
+  }, [currentlyPlaying]);
 
   // const onPlaying = () => {
   // const duration = audioElem.current.
