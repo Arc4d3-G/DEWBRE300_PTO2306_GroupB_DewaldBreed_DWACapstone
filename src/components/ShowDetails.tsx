@@ -110,7 +110,7 @@ type Props = {
 };
 
 export default function ShowDetails({ selectedShow }: Props) {
-  const { image, title, description, genres, seasons, id } = selectedShow;
+  const { title, description, genres, seasons, id } = selectedShow;
   const [selectedSeason, setSelectedSeason] = useState(seasons[0]);
   // const [loading, setLoading] = useState(true);
 

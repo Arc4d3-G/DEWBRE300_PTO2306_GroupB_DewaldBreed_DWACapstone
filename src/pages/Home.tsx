@@ -4,7 +4,7 @@ import { Preview } from '../api/createApi';
 import { GENRES } from '../api/createApi';
 import { useState } from 'react';
 import { store } from '../main';
-import Carousel from '../components/Carousel';
+// import Carousel from '../components/Carousel';
 
 const Container = styled.div`
   padding: 20px 30px;

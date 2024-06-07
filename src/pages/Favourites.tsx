@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Episode, Preview, Season, Show } from '../api/createApi';
-import { api, store } from '../main';
-import PreviewCard from '../components/PreviewCard';
+import { Preview } from '../api/createApi';
+import { store } from '../main';
 import EpisodeCard from '../components/EpisodeCard';
-import { useStore } from 'zustand';
-import { Favorite, UserData } from '../model/useStore';
+import { Favorite } from '../model/useStore';
 
 const Container = styled.div`
   padding: 20px 30px;
