@@ -41,68 +41,40 @@ export default function Carousel({ previewData, setShowDetailsOpen }: Props) {
   };
 
   const settings = {
-    className: 'center',
-    centerMode: true,
     infinite: true,
     centerPadding: '100px',
-    slidesToShow: 6,
+    slidesToShow: 4,
     speed: 500,
+    variableWidth: true,
     responsive: [
       {
         breakpoint: 2560,
         settings: {
-          className: 'center',
-          centerMode: true,
-          infinite: true,
-          centerPadding: '100px',
           slidesToShow: 5,
-          speed: 500,
         },
       },
       {
         breakpoint: 2165,
         settings: {
-          className: 'center',
-          centerMode: true,
-          infinite: true,
-          centerPadding: '100px',
           slidesToShow: 4,
-          speed: 500,
         },
       },
       {
         breakpoint: 1835,
         settings: {
-          className: 'center',
-          centerMode: true,
-          infinite: true,
-          centerPadding: '100px',
           slidesToShow: 3,
-          speed: 500,
         },
       },
       {
         breakpoint: 1505,
         settings: {
-          className: 'center',
-          centerMode: true,
-          dots: true,
-          infinite: true,
-          speed: 500,
           slidesToShow: 2,
-          slidesToScroll: 1,
         },
       },
       {
         breakpoint: 1086,
         settings: {
-          className: 'center',
-          centerMode: true,
-          dots: true,
-          infinite: true,
-          speed: 500,
           slidesToShow: 1,
-          slidesToScroll: 1,
         },
       },
     ],

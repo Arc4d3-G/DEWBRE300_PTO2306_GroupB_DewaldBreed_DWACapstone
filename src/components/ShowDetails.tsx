@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Show } from '../api/createApi';
 import styled from 'styled-components';
 import EpisodeCard from './EpisodeCard';
 import { store } from '../main';
 import { useStore } from 'zustand';
+import placeholderImg from '../assets/placeholder.png';
 
 const ShowContainer = styled.div`
   width: 100%;
@@ -119,6 +120,26 @@ export default function ShowDetails({ selectedShow }: Props) {
     setSelectedSeason(seasons[Number(value) - 1]);
   };
 
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.setAttribute('src', src);
+            img.classList.add('fade');
+            observer.disconnect();
+          }
+        }
+      });
+    });
+    if (imgRef.current) observer.observe(imgRef.current);
+  }, [selectedSeason.image]);
+
   const showFavorites = store
     .getState()
     .user?.favorites?.filter(
@@ -131,7 +152,12 @@ export default function ShowDetails({ selectedShow }: Props) {
     <ShowContainer>
       {/* {phase === 'LOADING' && <Loading>LOADING...</Loading>} */}
       <Top>
-        <Image src={selectedSeason.image} />
+        <Image
+          ref={imgRef}
+          src={placeholderImg}
+          data-src={selectedSeason.image}
+          loading='lazy'
+        />
         <MetaInfo>
           <Title>{title}</Title>
           <Description>{description}</Description>

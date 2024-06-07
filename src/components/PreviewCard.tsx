@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Preview } from '../api/createApi';
+import { useEffect, useRef } from 'react';
+import placeholderImg from '../assets/placeholder.png';
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.card};
@@ -62,9 +64,34 @@ type Props = {
 function PreviewCard({ show }: Props) {
   const { title, description, image, seasons, genres, updated } = show;
 
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.setAttribute('src', src);
+            img.classList.add('fade');
+            observer.disconnect();
+          }
+        }
+      });
+    });
+    if (imgRef.current) observer.observe(imgRef.current);
+  }, []);
+
   return (
     <Container>
-      <Image src={image} />
+      <Image
+        ref={imgRef}
+        src={placeholderImg}
+        data-src={image}
+        loading='lazy'
+      />
 
       <Info>
         <Title>{title}</Title>
