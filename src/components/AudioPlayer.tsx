@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   PlayCircleOutline as PlayIcon,
@@ -113,7 +113,7 @@ const Button = styled.div`
 `;
 
 export default function AudioPlayer() {
-  const [duration, setDuration] = React.useState(0);
+  const [duration, setDuration] = useState(0);
   const currentlyPlaying = useStore(store, (state) => state.currentlyPlaying);
   const isPlaying = useStore(store, (state) => state.isPlaying);
   const [currentProgress, setCurrentProgress] = useState(0);
