@@ -78,6 +78,7 @@ export default function Login({ user }: Props) {
           default: {
             colors: {
               brand: '#55cc88',
+              inputText: '#55cc88',
             },
           },
         },
