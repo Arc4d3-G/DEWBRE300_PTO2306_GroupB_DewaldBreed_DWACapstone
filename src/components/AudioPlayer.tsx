@@ -150,7 +150,6 @@ export default function AudioPlayer() {
   useEffect(() => {
     console.log('use Effect');
     if (isPlaying && audioElem.current) {
-      audioElem.current.volume = volume;
       audioElem.current.currentTime = 0;
       audioElem.current?.play();
     } else {
@@ -168,6 +167,11 @@ export default function AudioPlayer() {
       window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
     };
   }, [isPlaying, currentlyPlaying]);
+
+  useEffect(() => {
+    console.log('useEffect 2');
+    if (audioElem.current) audioElem.current.volume = volume;
+  }, [volume]);
 
   // const onPlaying = () => {
   // const duration = audioElem.current.
