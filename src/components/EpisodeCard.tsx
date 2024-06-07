@@ -78,7 +78,11 @@ export default function EpisodeCard({
   const { title, description, episode: episodeNum } = episode;
   const currentlyPlaying = useStore(store, (state) => state.currentlyPlaying);
 
-  const formattedDate = favoriteDate ? new Date(favoriteDate).toLocaleDateString() : null;
+  const formattedDate = favoriteDate
+    ? `${new Date(favoriteDate).toLocaleDateString()} ${new Date(
+        favoriteDate
+      ).getHours()}:${new Date(favoriteDate).getMinutes()}`
+    : null;
 
   useEffect(() => {
     setIsFavorite(isAlreadyFavorite);

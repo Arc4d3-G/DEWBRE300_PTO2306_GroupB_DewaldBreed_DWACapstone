@@ -51,6 +51,7 @@ const CarouselContainer = styled.div`
   margin-right: auto;
   background-color: ${({ theme }) => theme.bg};
   padding: 40px 50px;
+  border-radius: 6px;
   @media (max-width: 670px) {
     display: none;
   }
