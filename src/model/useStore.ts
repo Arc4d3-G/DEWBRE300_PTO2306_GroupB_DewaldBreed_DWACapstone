@@ -45,10 +45,10 @@ export const createStore = (api: Api) => {
     isPlaying: false,
 
     setSelectedShow: (id: string) => {
-      set({ phase: 'LOADING' });
+      // set({ phase: 'LOADING' });
       console.log(store.getState());
       api.getShowDetails(id).then((data) => {
-        set({ phase: 'DONE', selectedShow: data });
+        set({ selectedShow: data });
         console.log(store.getState());
       });
     },

@@ -67,7 +67,7 @@ type Props = {
 
 export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
   const selectedShow: Show | null = useStore(store, (state) => state.selectedShow);
-  const phase = useStore(store, (state) => state.phase);
+  // const phase = useStore(store, (state) => state.phase);
 
   const handleClose = () => {
     setShowDetailsOpen(false);
@@ -81,7 +81,7 @@ export default function ShowDetailsOverLay({ setShowDetailsOpen }: Props) {
           <CloseBtn onClick={() => handleClose()}>
             <CloseIcon />
           </CloseBtn>
-          {phase === 'LOADING' && <Loading>LOADING...</Loading>}
+          {!selectedShow && <Loading>LOADING...</Loading>}
           {selectedShow && <ShowDetails selectedShow={selectedShow} />}
         </Dialog>
       </Container>

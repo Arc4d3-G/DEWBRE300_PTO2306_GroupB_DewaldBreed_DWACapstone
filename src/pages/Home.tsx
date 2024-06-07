@@ -187,7 +187,7 @@ export default function Home({ previewData, setShowDetailsOpen, phase }: Props) 
     setShowDetailsOpen(true);
   };
 
-  // if (phase === 'LOADING') return <Loading>LOADING...</Loading>;
+  if (phase === 'LOADING') return <Loading>LOADING...</Loading>;
 
   return (
     <Container>
