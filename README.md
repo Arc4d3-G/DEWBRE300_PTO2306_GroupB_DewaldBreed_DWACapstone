@@ -1,5 +1,7 @@
 # PodStream
 
+!['showcase gif'](./public/showcase.gif)
+
 ## About
 
 This project is a react podcast streaming app utilizing the following:
